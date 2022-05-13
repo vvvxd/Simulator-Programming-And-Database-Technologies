@@ -1,0 +1,70 @@
+
+
+CREATE TABLE tasks
+(
+    id NUMBER (19)  NOT NULL ,
+    reference_query VARCHAR2 (1000)  NOT NULL ,
+    title VARCHAR2 (100)  NOT NULL ,
+    serial_numbe NUMBER  NOT NULL ,
+    description VARCHAR2 (2000)
+)
+;
+
+
+
+ALTER TABLE tasks
+    ADD CONSTRAINT tasks_PK PRIMARY KEY ( id ) ;
+
+
+CREATE TABLE tasks_users
+(
+    tasks_id NUMBER (19)  NOT NULL ,
+    users_id NUMBER (19)  NOT NULL ,
+    status VARCHAR2 (100)
+)
+;
+
+
+
+ALTER TABLE tasks_users
+    ADD CONSTRAINT tasks_users__IDX PRIMARY KEY ( tasks_id, users_id ) ;
+
+
+CREATE TABLE users
+(
+    id NUMBER (19)  NOT NULL ,
+    email VARCHAR2 (100)  NOT NULL
+)
+;
+
+
+
+ALTER TABLE users
+    ADD CONSTRAINT users_PK PRIMARY KEY ( id ) ;
+
+
+
+ALTER TABLE tasks_users
+    ADD CONSTRAINT FK_ASS_1 FOREIGN KEY
+        (
+         tasks_id
+            )
+        REFERENCES tasks
+            (
+             id
+                )
+        ON DELETE CASCADE
+;
+
+
+ALTER TABLE tasks_users
+    ADD CONSTRAINT FK_ASS_2 FOREIGN KEY
+        (
+         users_id
+            )
+        REFERENCES users
+            (
+             id
+                )
+        ON DELETE CASCADE
+;
