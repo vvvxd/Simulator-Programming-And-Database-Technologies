@@ -4,10 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class QueryRequestDTO {
-    private String sql;
-    private Long taskId;
+public class SqlDTO {
+
+    private String text;
+
 }

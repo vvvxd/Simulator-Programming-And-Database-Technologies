@@ -24,5 +24,12 @@ public class TasksEntity {
 
     @Column(name = "DESCRIPTION")
     private String description;
+
+    @Column(name = "QUERY_HISTORY_ID")
+    private Long queryHistoryId;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "QUERY_HISTORY_ID",referencedColumnName = "ID", insertable = false, updatable = false)
+    private QueryHistoryEntity queryHistory;
 }
 

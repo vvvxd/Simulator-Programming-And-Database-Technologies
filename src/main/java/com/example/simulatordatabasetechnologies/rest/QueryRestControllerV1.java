@@ -1,20 +1,23 @@
 package com.example.simulatordatabasetechnologies.rest;
 
 import com.example.simulatordatabasetechnologies.dto.QueryRequestDTO;
+import com.example.simulatordatabasetechnologies.dto.SqlDTO;
 import com.example.simulatordatabasetechnologies.service.QueryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 import java.util.Map;
 
-@Service
 @Slf4j
+@RestController
+@RequestMapping("/api/v1/query")
 public class QueryRestControllerV1 {
 
     private final QueryService queryService;
@@ -23,11 +26,11 @@ public class QueryRestControllerV1 {
         this.queryService = queryService;
     }
 
-    @PostMapping
+    @PostMapping("/execute_select")
     @PreAuthorize("hasAuthority('study')")
-    public ResponseEntity<?> executeSelect(@RequestBody String sql) {
+    public ResponseEntity<?> executeSelect(@RequestBody SqlDTO sql) {
         try {
-            List<Map<String, Object>> result = queryService.executeSelect(sql);
+            List<Map<String, Object>> result = queryService.executeSelect(sql.getText());
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (RuntimeException e) {
             log.debug(e.getMessage());
@@ -35,7 +38,7 @@ public class QueryRestControllerV1 {
         }
     }
 
-    @PostMapping
+    @PostMapping("/check_select")
     @PreAuthorize("hasAuthority('study')")
     public ResponseEntity<?> checkSelect(@RequestBody QueryRequestDTO request) {
         try {
@@ -47,11 +50,11 @@ public class QueryRestControllerV1 {
         }
     }
 
-    @PostMapping
+    @PostMapping("/get_sql_cost")
     @PreAuthorize("hasAuthority('study')")
-    public ResponseEntity<?> getSQLCost(@RequestBody String sql) {
+    public ResponseEntity<?> getSQLCost(@RequestBody SqlDTO sql) {
         try {
-            Map<String,Object> result = queryService.getSQLCost(sql);
+            Map<String,Object> result = queryService.getSQLCost(sql.getText());
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (RuntimeException e) {
             log.debug(e.getMessage());
@@ -59,11 +62,11 @@ public class QueryRestControllerV1 {
         }
     }
 
-    @PostMapping
+    @PostMapping("/get_sql_plan")
     @PreAuthorize("hasAuthority('study')")
-    public ResponseEntity<?> getSQLPlan(@RequestBody String sql) {
+    public ResponseEntity<?> getSQLPlan(@RequestBody SqlDTO sql) {
         try {
-            Map<String,Object> result = queryService.getSQLPlan(sql);
+            String result = queryService.getSQLPlan(sql.getText());
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (RuntimeException e) {
             log.debug(e.getMessage());
