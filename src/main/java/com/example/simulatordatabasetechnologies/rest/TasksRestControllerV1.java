@@ -1,8 +1,7 @@
 package com.example.simulatordatabasetechnologies.rest;
 
-import com.example.simulatordatabasetechnologies.dto.TasksDto;
-import com.example.simulatordatabasetechnologies.dto.TasksInfoDto;
-import com.example.simulatordatabasetechnologies.model.UserEntity;
+import com.example.simulatordatabasetechnologies.dto.TasksDTO;
+import com.example.simulatordatabasetechnologies.dto.TasksRequestDTO;
 import com.example.simulatordatabasetechnologies.service.TasksService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -15,6 +14,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequestMapping("/api/v1/tasks")
+@CrossOrigin(origins="http://localhost:3000")
 public class TasksRestControllerV1 {
 
     private final TasksService tasksService;
@@ -27,7 +27,7 @@ public class TasksRestControllerV1 {
     @PreAuthorize("hasAuthority('study')")
     public ResponseEntity<?> getUserTasks() {
         try {
-            List<TasksDto> tasks = tasksService.getUserTasks();
+            List<TasksDTO> tasks = tasksService.getUserTasks();
             return new ResponseEntity<>(tasks, HttpStatus.OK);
         } catch (RuntimeException e) {
             log.debug(e.getMessage());
@@ -39,7 +39,19 @@ public class TasksRestControllerV1 {
     @PreAuthorize("hasAuthority('study')")
     public ResponseEntity<?> getTaskInfo(@PathVariable long id) {
         try {
-            TasksInfoDto tasks = tasksService.getTaskInfo(id);
+            TasksDTO tasks = tasksService.getTaskInfo(id);
+            return new ResponseEntity<>(tasks, HttpStatus.OK);
+        } catch (RuntimeException e) {
+            log.debug(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @PostMapping
+    @PreAuthorize("hasAuthority('study')")
+    public ResponseEntity<?> addTasks(@RequestBody TasksRequestDTO request) {
+        try {
+            TasksRequestDTO tasks = tasksService.addTask(request);
             return new ResponseEntity<>(tasks, HttpStatus.OK);
         } catch (RuntimeException e) {
             log.debug(e.getMessage());

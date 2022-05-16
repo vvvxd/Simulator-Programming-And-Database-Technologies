@@ -4,14 +4,15 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TasksDto {
+public class TasksInfoDTO {
 
     private Long id;
     private String title;
     private Long serialNumber;
-    private Long status;
+    private String description;
 
 }

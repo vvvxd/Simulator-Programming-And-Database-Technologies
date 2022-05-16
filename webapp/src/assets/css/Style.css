@@ -34,13 +34,23 @@
 .arrow-down {
     border-top: 10px solid white;
 }
+.checkmark {
+    text-align: center;
+    position: absolute;
+    top: 13px;
+    right: 0;
+    left: 0;
+    margin-left: 1px;
+    color: #5cb85c;
+    font-size: 12px;
+}
 
 ::-webkit-scrollbar {
     width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: #606060;
+    background: #fff8f8;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -48,5 +58,5 @@
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #bebebe;
+    background: #ffffff;
 }

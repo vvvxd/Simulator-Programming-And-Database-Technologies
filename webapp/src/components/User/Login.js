@@ -47,7 +47,7 @@ const Login = (props) => {
         console.log(error.message);
         setShow(true);
         resetLoginForm();
-        setError("Invalid email and password");
+        setError("Неверный адрес электронной почты или пароль");
       });
   };
 
@@ -68,9 +68,9 @@ const Login = (props) => {
             {error}
           </Alert>
         )}
-        <Card className={"border border-dark bg-dark text-white"}>
+        <Card className={"border bg-light text-dark"}>
           <Card.Header>
-            <FontAwesomeIcon icon={faSignInAlt} /> Login
+            <FontAwesomeIcon icon={faSignInAlt} /> Авторизация
           </Card.Header>
           <Card.Body>
             <Form.Row>
@@ -88,7 +88,7 @@ const Login = (props) => {
                     name="email"
                     value={user.email}
                     onChange={credentialChange}
-                    className={"bg-dark text-white"}
+                    className={"bg-light text-dark"}
                     placeholder="Enter Email Address"
                   />
                 </InputGroup>
@@ -109,7 +109,7 @@ const Login = (props) => {
                     name="password"
                     value={user.password}
                     onChange={credentialChange}
-                    className={"bg-dark text-white"}
+                    className={"bg-light text-dark"}
                     placeholder="Enter Password"
                   />
                 </InputGroup>
@@ -124,7 +124,7 @@ const Login = (props) => {
               onClick={validateUser}
               disabled={user.email.length === 0 || user.password.length === 0}
             >
-              <FontAwesomeIcon icon={faSignInAlt} /> Login
+              <FontAwesomeIcon icon={faSignInAlt} /> Авторизоваться
             </Button>{" "}
             <Button
               size="sm"
@@ -133,7 +133,7 @@ const Login = (props) => {
               onClick={resetLoginForm}
               disabled={user.email.length === 0 && user.password.length === 0}
             >
-              <FontAwesomeIcon icon={faUndo} /> Reset
+              <FontAwesomeIcon icon={faUndo} /> Сброс
             </Button>
           </Card.Footer>
         </Card>

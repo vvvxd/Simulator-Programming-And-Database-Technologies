@@ -23,10 +23,10 @@ const NavigationBar = () => {
       <div className="mr-auto"></div>
       <Nav className="navbar-right">
         <Link to={"register"} className="nav-link">
-          <FontAwesomeIcon icon={faUserPlus} /> Register
+          <FontAwesomeIcon icon={faUserPlus} /> Регистрация
         </Link>
         <Link to={"login"} className="nav-link">
-          <FontAwesomeIcon icon={faSignInAlt} /> Login
+          <FontAwesomeIcon icon={faSignInAlt} /> Авторизация
         </Link>
       </Nav>
     </>
@@ -34,6 +34,9 @@ const NavigationBar = () => {
   const userLinks = (
     <>
       <Nav className="mr-auto">
+        <Link to={"tasks"} className="nav-link">
+          Задачи
+        </Link>
         <Link to={"add"} className="nav-link">
           Add Book
         </Link>
@@ -46,22 +49,27 @@ const NavigationBar = () => {
       </Nav>
       <Nav className="navbar-right">
         <Link to={"logout"} className="nav-link" onClick={logout}>
-          <FontAwesomeIcon icon={faSignOutAlt} /> Logout
+          <FontAwesomeIcon icon={faSignOutAlt} /> Выход
         </Link>
       </Nav>
     </>
+    
   );
+  const toastCss = {
 
+    boxShadow:
+      "0 1px 8px 0 rgba(0, 0, 0, 0.01), 0 6px 20px 0 rgba(0, 0, 0, 0.07)",
+  };
   return (
-    <Navbar bg="dark" variant="dark">
+    <Navbar style={toastCss} className={"border text-dark"} bg="light" variant="light">
       <Link to={auth.isLoggedIn ? "home" : ""} className="navbar-brand">
         <img
-          src="https://upload.wikimedia.org/wikipedia/commons/b/ba/Book_icon_1.png"
-          width="25"
-          height="25"
+          src="http://atpp.vstu.edu.ru/atpphead2.gif"
+          width="50"
+          height="50"
           alt="brand"
         />{" "}
-        Book Store
+        Базы данных. SQL
       </Link>
       {auth.isLoggedIn ? userLinks : guestLinks}
     </Navbar>

@@ -1,11 +1,11 @@
 package com.example.simulatordatabasetechnologies.service.impl;
 
 import com.example.simulatordatabasetechnologies.dto.QueryRequestDTO;
-import com.example.simulatordatabasetechnologies.model.QueryHistoryEntity;
-import com.example.simulatordatabasetechnologies.model.TasksEntity;
-import com.example.simulatordatabasetechnologies.model.UserEntity;
+import com.example.simulatordatabasetechnologies.dto.TasksDTO;
+import com.example.simulatordatabasetechnologies.model.*;
 import com.example.simulatordatabasetechnologies.security.SecurityService;
 import com.example.simulatordatabasetechnologies.service.QueryService;
+import com.example.simulatordatabasetechnologies.service.TasksService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -13,6 +13,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Root;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,10 +30,12 @@ public class QueryServiceImpl implements QueryService {
 
     private final JdbcTemplate jdbcTemplate;
     private final SecurityService securityService;
+    private final TasksService tasksService;
 
-    public QueryServiceImpl(JdbcTemplate jdbcTemplate, SecurityService securityService) {
+    public QueryServiceImpl(JdbcTemplate jdbcTemplate, SecurityService securityService, TasksService tasksService) {
         this.jdbcTemplate = jdbcTemplate;
         this.securityService = securityService;
+        this.tasksService = tasksService;
     }
 
 
@@ -71,6 +76,8 @@ public class QueryServiceImpl implements QueryService {
         }
 
         if (result) {
+            changeTasksStatus(task.getId(),userEntity.getId(),1L);
+
             Long cost = getSQLCostVal(requestDTO.getSql());
             QueryHistoryEntity userQueryHistory = addQueryHistory(task.getId(), cost, userEntity.getId(), requestDTO.getSql(), 1L);
 
@@ -83,6 +90,7 @@ public class QueryServiceImpl implements QueryService {
                     task.setQueryHistoryId(userQueryHistory.getId());
             }
         } else {
+            changeTasksStatus(task.getId(),userEntity.getId(),0L);
             addQueryHistory(task.getId(), null, userEntity.getId(), requestDTO.getSql(), 0L);
         }
 
@@ -152,5 +160,24 @@ public class QueryServiceImpl implements QueryService {
         em.flush();
 
         return queryHistory;
+    }
+
+    @Transactional(propagation = Propagation.MANDATORY)
+    void changeTasksStatus(Long taskId, Long userId, Long status) {
+        TasksDTO tasksDTO = tasksService.getTaskInfo(taskId);
+
+        if (!Long.getLong("1").equals(tasksDTO.getStatus())) {
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaUpdate<TasksUsersEntity> cu = cb.createCriteriaUpdate(TasksUsersEntity.class);
+            Root<TasksUsersEntity> root = cu.from(TasksUsersEntity.class);
+
+            cu.set(TasksUsersEntity_.STATUS, status);
+
+            cu.where(cb.equal(root.get(TasksUsersEntity_.TASKS_ID), taskId),
+                    cb.equal(root.get(TasksUsersEntity_.USERS_ID), userId)
+            );
+
+            em.createQuery(cu).executeUpdate();
+        }
     }
 }

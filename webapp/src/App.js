@@ -13,6 +13,7 @@ import Register from "./components/User/Register";
 import Login from "./components/User/Login";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
+import Tasks from './components/Tasks/Tasks';
 
 const App = () => {
   window.onbeforeunload = (event) => {
@@ -32,6 +33,7 @@ const App = () => {
           <Col lg={12} className={"margin-top"}>
             <Switch>
               <Route path="/" exact component={Welcome} />
+              <Route path="/tasks" exact component={Tasks} />
               <Route path="/home" exact component={Home} />
               <Route path="/add" exact component={Book} />
               <Route path="/edit/:id" exact component={Book} />

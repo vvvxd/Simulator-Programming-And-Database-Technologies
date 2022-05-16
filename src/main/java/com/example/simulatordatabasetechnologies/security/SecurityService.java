@@ -21,7 +21,7 @@ public class SecurityService {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         Authentication authentication = securityContext.getAuthentication();
         if (authentication instanceof UsernamePasswordAuthenticationToken) {
-            userRepository.findByEmail(authentication.getName());
+            return userRepository.findByEmail(authentication.getName()).get();
         }
         return null;
     }

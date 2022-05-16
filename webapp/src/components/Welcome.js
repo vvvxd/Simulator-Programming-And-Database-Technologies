@@ -14,7 +14,7 @@ const Welcome = (props) => {
   }, [quotes]);
 
   return (
-    <Card bg="dark" text="light">
+    <Card bg="light" text="dark">
       <Card.Header>Quotes</Card.Header>
       <Card.Body style={{ overflowY: "scroll", height: "570px" }}>
         {quotes &&

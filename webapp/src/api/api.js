@@ -6,9 +6,12 @@ import {
   FETCH_BOOK,
   FETCH_LAN,
   FETCH_TYPES,
+  GET_TASK_INFO,
+  GET_USER_TASKS,
   RANDOM_API,
   REGISTER_URL,
-  SAVE_BOOK, SEARCH_BOOK,
+  SAVE_BOOK,
+  SEARCH_BOOK,
   UPDATE_BOOK
 } from './urls';
 
@@ -28,6 +31,40 @@ export const usersAPI = {
   },
   
 }
+
+export const tasksAPI = {
+  getUserTasks() {
+    return axios.get(GET_USER_TASKS);
+  },
+  getTaskInfo(id) {
+    return axios.get(GET_TASK_INFO + "/" + id);
+  },
+  addTasks(referenceQuery, title, serialNumber, description) {
+    return axios.post(AUTH_URL, {
+      id: null,
+      referenceQuery: referenceQuery,
+      title: title,
+      serialNumber: serialNumber,
+      description: description
+    })
+  },
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export const BookAPI = {
   saveBook(book) {
