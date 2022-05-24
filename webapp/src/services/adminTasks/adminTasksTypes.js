@@ -1,0 +1,7 @@
+export const SET_IS_LOADING_ALL_TASKS = "SET_IS_LOADING_ALL_TASKS";
+export const SET_ERROR_ALL_TASKS = "SET_ERROR_ALL_TASKS";
+export const SET_ALL_TASKS = "SET_ALL_TASKS";
+
+
+
+

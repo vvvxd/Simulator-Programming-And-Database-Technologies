@@ -16,11 +16,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class QueryServiceImpl implements QueryService {
@@ -46,7 +44,7 @@ public class QueryServiceImpl implements QueryService {
 
     @Override
     @Transactional
-    public Boolean checkSelect(QueryRequestDTO requestDTO) {
+    public Map<String, Object> checkSelect(QueryRequestDTO requestDTO) {
         TasksEntity task = em.find(TasksEntity.class, requestDTO.getTaskId());
         if (task == null)
             throw new RuntimeException("Задание не найдено.");
@@ -55,30 +53,42 @@ public class QueryServiceImpl implements QueryService {
         if (userEntity == null)
             throw new RuntimeException("Пользователь не найден");
 
-        Boolean result = true;
+        Boolean decision = true;
+        String error = "";
 
         List<Map<String, Object>> userQueryResult = jdbcTemplate.queryForList(requestDTO.getSql());
 
         List<Map<String, Object>> referenceQueryResult = jdbcTemplate.queryForList(task.getReferenceQuery());
 
-        if (referenceQueryResult.size() != userQueryResult.size())
-            result = false;
-
-        for (int i = 0; i < referenceQueryResult.size(); i++) {
-            List<Object> userQuery = new ArrayList<>(userQueryResult.get(i).values());
-            List<Object> referenceQuery = new ArrayList<>(referenceQueryResult.get(i).values());
-
-            if (userQuery.size() != referenceQuery.size())
-                result = false;
-
-            if (!referenceQuery.equals(userQuery))
-                result = false;
+        if (referenceQueryResult.size() != userQueryResult.size()) {
+            decision = false;
+            error = "Неверная выборка";
         }
 
-        if (result) {
-            changeTasksStatus(task.getId(),userEntity.getId(),1L);
+        if (decision)
+            for (int i = 0; i < referenceQueryResult.size(); i++) {
+                List<Object> userQuery = new ArrayList<>(userQueryResult.get(i).values());
+                List<Object> referenceQuery = new ArrayList<>(referenceQueryResult.get(i).values());
 
-            Long cost = getSQLCostVal(requestDTO.getSql());
+                if (userQuery.size() != referenceQuery.size()) {
+                    decision = false;
+                    error = "Неверное количество столбцов в выборке";
+                }
+
+                if (!referenceQuery.equals(userQuery)) {
+                    decision = false;
+                    error = "Неверная выборка";
+                }
+            }
+
+        task.setTotalAttempts(task.getTotalAttempts() + 1);
+
+        if (decision) {
+            task.setDecidedRight(task.getDecidedRight() + 1);
+
+            changeTasksStatus(task.getId(), userEntity.getId(), 1L);
+
+            Long cost = getSQLCostVal(requestDTO.getSql()).longValue();
             QueryHistoryEntity userQueryHistory = addQueryHistory(task.getId(), cost, userEntity.getId(), requestDTO.getSql(), 1L);
 
             if (task.getQueryHistoryId() == null)
@@ -90,16 +100,21 @@ public class QueryServiceImpl implements QueryService {
                     task.setQueryHistoryId(userQueryHistory.getId());
             }
         } else {
-            changeTasksStatus(task.getId(),userEntity.getId(),0L);
+            task.setDecidedWrong(task.getDecidedWrong() + 1);
+            changeTasksStatus(task.getId(), userEntity.getId(), 0L);
             addQueryHistory(task.getId(), null, userEntity.getId(), requestDTO.getSql(), 0L);
         }
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("decision",decision);
+        result.put("error",error);
 
         return result;
     }
 
     @Override
     @Transactional
-    public Long getSQLCostVal(String sql) {
+    public BigDecimal getSQLCostVal(String sql) {
         String uuid = UUID.randomUUID().toString().substring(0, 18);
 
         jdbcTemplate.update("EXPLAIN PLAN set STATEMENT_ID = '" + uuid + "' FOR " + sql);
@@ -110,7 +125,7 @@ public class QueryServiceImpl implements QueryService {
         jdbcTemplate.update("delete from plan_table p " +
                 "where p.id = 0 and p.STATEMENT_ID = '" + uuid + "' ");
 
-        return (Long) cost.get("COST");
+        return (BigDecimal) cost.get("COST");
     }
 
     @Override
@@ -166,15 +181,15 @@ public class QueryServiceImpl implements QueryService {
     void changeTasksStatus(Long taskId, Long userId, Long status) {
         TasksDTO tasksDTO = tasksService.getTaskInfo(taskId);
 
-        if (!Long.getLong("1").equals(tasksDTO.getStatus())) {
+        if (!Long.valueOf(1).equals(tasksDTO.getStatus())) {
             CriteriaBuilder cb = em.getCriteriaBuilder();
             CriteriaUpdate<TasksUsersEntity> cu = cb.createCriteriaUpdate(TasksUsersEntity.class);
             Root<TasksUsersEntity> root = cu.from(TasksUsersEntity.class);
 
-            cu.set(TasksUsersEntity_.STATUS, status);
+            cu.set(TasksUsersEntity_.status, status);
 
-            cu.where(cb.equal(root.get(TasksUsersEntity_.TASKS_ID), taskId),
-                    cb.equal(root.get(TasksUsersEntity_.USERS_ID), userId)
+            cu.where(cb.equal(root.get(TasksUsersEntity_.tasksId), taskId),
+                    cb.equal(root.get(TasksUsersEntity_.usersId), userId)
             );
 
             em.createQuery(cu).executeUpdate();

@@ -14,6 +14,9 @@ import Login from "./components/User/Login";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
 import Tasks from './components/Tasks/Tasks';
+import Task from './components/Tasks/Task';
+import TaskStats from './components/Tasks/TaskStats';
+import Admin from './components/Admin/Admin';
 
 const App = () => {
   window.onbeforeunload = (event) => {
@@ -30,15 +33,18 @@ const App = () => {
       <NavigationBar />
       <Container>
         <Row>
-          <Col lg={12} className={"margin-top"}>
+          <Col xl={12} className={"margin-top"}>
             <Switch>
               <Route path="/" exact component={Welcome} />
               <Route path="/tasks" exact component={Tasks} />
+              <Route path="/task_stats/:id" exact component={TaskStats} />
+              <Route path="/task/:id" exact component={Task} />
               <Route path="/home" exact component={Home} />
+              <Route path="/admin" exact component={Admin} />
               <Route path="/add" exact component={Book} />
               <Route path="/edit/:id" exact component={Book} />
               <Route path="/list" exact component={BookList} />
-              <Route path="/profile" exact component={UserList} />
+              <Route path="/profile/:id" exact component={UserList} />
               <Route path="/register" exact component={Register} />
               <Route path="/login" exact component={Login} />
               <Route

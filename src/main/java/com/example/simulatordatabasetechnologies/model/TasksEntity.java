@@ -25,6 +25,15 @@ public class TasksEntity {
     @Column(name = "DESCRIPTION")
     private String description;
 
+    @Column(name = "DECIDED_RIGHT")
+    private Long decidedRight;
+
+    @Column(name = "DECIDED_WRONG")
+    private Long decidedWrong;
+
+    @Column(name = "TOTAL_ATTEMPTS")
+    private Long totalAttempts;
+
     @Column(name = "QUERY_HISTORY_ID")
     private Long queryHistoryId;
 

@@ -1,7 +1,6 @@
 package com.example.simulatordatabasetechnologies.service;
 
-import com.example.simulatordatabasetechnologies.dto.TasksDTO;
-import com.example.simulatordatabasetechnologies.dto.TasksRequestDTO;
+import com.example.simulatordatabasetechnologies.dto.*;
 
 import java.util.List;
 
@@ -10,5 +9,17 @@ public interface TasksService {
 
     TasksDTO getTaskInfo(Long taskId);
 
+    QueryDTO getWorstTaskQuery(Long taskId);
+
+    List<QueryDTO> getTaskWrongQueries(Long taskId);
+
     TasksRequestDTO addTask(TasksRequestDTO task);
+
+    TaskStatsDTO getTaskStats(long id);
+
+    TasksRequestDTO updateTask(TasksRequestDTO data);
+
+    void deleteTask(Long id);
+
+    List<TasksAdminDTO> getAllTasks();
 }

@@ -1,6 +1,7 @@
 package com.example.simulatordatabasetechnologies.rest;
 
 import com.example.simulatordatabasetechnologies.dto.QueryRequestDTO;
+import com.example.simulatordatabasetechnologies.dto.ResponseDTO;
 import com.example.simulatordatabasetechnologies.dto.SqlDTO;
 import com.example.simulatordatabasetechnologies.service.QueryService;
 import lombok.extern.slf4j.Slf4j;
@@ -8,9 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -27,48 +25,48 @@ public class QueryRestControllerV1 {
     @PostMapping("/execute_select")
     @PreAuthorize("hasAuthority('study')")
     public ResponseEntity<?> executeSelect(@RequestBody SqlDTO sql) {
+        ResponseDTO response = new ResponseDTO();
         try {
-            List<Map<String, Object>> result = queryService.executeSelect(sql.getText());
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            response.setData( queryService.executeSelect(sql.getText()));
         } catch (RuntimeException e) {
-            log.debug(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+            response.setError( e.getMessage());;
         }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/check_select")
     @PreAuthorize("hasAuthority('study')")
     public ResponseEntity<?> checkSelect(@RequestBody QueryRequestDTO request) {
+        ResponseDTO response = new ResponseDTO();
         try {
-            Boolean result = queryService.checkSelect(request);
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            response.setData( queryService.checkSelect(request));
         } catch (RuntimeException e) {
-            log.debug(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+            response.setError( e.getMessage());;
         }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/get_sql_cost")
     @PreAuthorize("hasAuthority('study')")
     public ResponseEntity<?> getSQLCost(@RequestBody SqlDTO sql) {
+        ResponseDTO response = new ResponseDTO();
         try {
-            Map<String,Object> result = queryService.getSQLCost(sql.getText());
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            response.setData( queryService.getSQLCost(sql.getText()));
         } catch (RuntimeException e) {
-            log.debug(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+            response.setError( e.getMessage());
         }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping("/get_sql_plan")
     @PreAuthorize("hasAuthority('study')")
     public ResponseEntity<?> getSQLPlan(@RequestBody SqlDTO sql) {
+        ResponseDTO response = new ResponseDTO();
         try {
-            String result = queryService.getSQLPlan(sql.getText());
-            return new ResponseEntity<>(result, HttpStatus.OK);
+            response.setData( queryService.getSQLPlan(sql.getText()));
         } catch (RuntimeException e) {
-            log.debug(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+            response.setError( e.getMessage());
         }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

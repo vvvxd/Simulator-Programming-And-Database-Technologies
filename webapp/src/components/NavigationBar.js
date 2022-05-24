@@ -22,10 +22,10 @@ const NavigationBar = () => {
     <>
       <div className="mr-auto"></div>
       <Nav className="navbar-right">
-        <Link to={"register"} className="nav-link">
+        <Link to="/register" className="nav-link">
           <FontAwesomeIcon icon={faUserPlus} /> Регистрация
         </Link>
-        <Link to={"login"} className="nav-link">
+        <Link to="/login" className="nav-link">
           <FontAwesomeIcon icon={faSignInAlt} /> Авторизация
         </Link>
       </Nav>
@@ -34,21 +34,18 @@ const NavigationBar = () => {
   const userLinks = (
     <>
       <Nav className="mr-auto">
-        <Link to={"tasks"} className="nav-link">
+        <Link to="/tasks" className="nav-link">
           Задачи
         </Link>
-        <Link to={"add"} className="nav-link">
-          Add Book
+        <Link to={"/profile/"+auth.id} className="nav-link">
+          Профиль пользователя
         </Link>
-        <Link to={"list"} className="nav-link">
-          Book List
-        </Link>
-        <Link to={"profile"} className="nav-link">
-          User Profile
+        <Link to="/admin" className="nav-link">
+          Админка
         </Link>
       </Nav>
       <Nav className="navbar-right">
-        <Link to={"logout"} className="nav-link" onClick={logout}>
+        <Link to="/logout" className="nav-link" onClick={logout}>
           <FontAwesomeIcon icon={faSignOutAlt} /> Выход
         </Link>
       </Nav>

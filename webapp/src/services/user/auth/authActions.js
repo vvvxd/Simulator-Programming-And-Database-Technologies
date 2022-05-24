@@ -1,8 +1,5 @@
 import * as AT from "./authTypes";
-import axios from "axios";
 import {usersAPI} from '../../../api/api';
-
-const AUTH_URL = "http://localhost:8081/rest/user/authenticate";
 
 export const authenticateUser = (email, password) => async (dispatch) => {
   dispatch(loginRequest());
@@ -10,12 +7,9 @@ export const authenticateUser = (email, password) => async (dispatch) => {
     const response = await usersAPI.auth(email,password);
     localStorage.setItem("jwtToken", response.data.token);
     dispatch(success({
-      username: response.data.name,
       isLoggedIn: true,
       email: response.data.email,
       id: response.data.id,
-      urlImg: !!response.data.urlImg ? response.data.urlImg : "",
-      mobile: response.data.mobile
     }));
     return Promise.resolve(response.data);
   } catch (error) {

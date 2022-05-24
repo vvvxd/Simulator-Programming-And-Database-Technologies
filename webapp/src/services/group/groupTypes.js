@@ -1,0 +1,7 @@
+export const SET_IS_LOADING_ALL_GROUP = "SET_IS_LOADING_ALL_GROUP";
+export const SET_ERROR_ALL_GROUP = "SET_ERROR_ALL_GROUP";
+export const SET_ALL_GROUP = "SET_ALL_GROUP";
+
+
+
+

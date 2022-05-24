@@ -14,5 +14,8 @@ public class TasksDTO {
     private String title;
     private Long status;
     private String description;
+    private Long decidedRight;
+    private Long decidedWrong;
+    private Long totalAttempts;
 
 }

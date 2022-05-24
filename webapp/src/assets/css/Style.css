@@ -27,6 +27,24 @@
     display: inline-block;
 }
 
+.info_place{
+    min-height: 80vh;
+    border-right: 1px solid #9ea2a2;
+}
+
+.editor_place{
+    min-height:40vh;
+    border-bottom: 1px solid #9ea2a2;
+}
+
+.table_place{
+    min-height: 40vh;
+}
+
+.button_group{
+    margin-left: 0;
+}
+
 .arrow-up {
     border-bottom: 10px solid white;
 }
@@ -44,7 +62,12 @@
     color: #5cb85c;
     font-size: 12px;
 }
-
+.container__mod{
+    background-color: #FFFFFF;
+    width: 1140px;
+    border: 1px solid #9ea2a2;
+    box-shadow: 0 1px 8px 0 rgba(0, 0, 0, 0.01), 0 6px 20px 0 rgba(0, 0, 0, 0.07);
+}
 ::-webkit-scrollbar {
     width: 8px;
 }
