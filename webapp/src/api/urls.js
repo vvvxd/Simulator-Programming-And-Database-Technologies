@@ -32,15 +32,9 @@ export const ADD_TASKS = "http://localhost:8080/api/v1/tasks/add_tasks";
 export const UPDATE_TASK = "http://localhost:8080/api/v1/tasks/update_task";
 export const DELETE_TASK = "http://localhost:8080/api/v1/tasks/delete_task";
 
+export const USERS = "http://localhost:8080/api/v1/users/get_users";
+export const ADD_USER = "http://localhost:8080/api/v1/users/add_user";
+export const UPDATE_USER = "http://localhost:8080/api/v1/users/update_user";
+export const DELETE_USER = "http://localhost:8080/api/v1/users/delete_user";
 
-
-
-export const SAVE_BOOK = "http://localhost:8081/rest/books/save";
-export const UPDATE_BOOK = "http://localhost:8081/rest/books/update/";
-export const FETCH_BOOK = "http://localhost:8081/rest/books/";
-export const DELETE_BOOK = "http://localhost:8081/rest/books/";
-export const FETCH_TYPES = "http://localhost:8081/rest/books/languages";
-export const FETCH_LAN = "http://localhost:8081/rest/books/types";
-export const FETCH_ALL_BOOK = "http://localhost:8081/rest/books";
-export const SEARCH_BOOK = "http://localhost:8081/rest/books/search/";
 export const RANDOM_API = "https://randomapi.com/api/6de6abfedb24f889e0b5f675edc50deb?fmt=raw&sole";

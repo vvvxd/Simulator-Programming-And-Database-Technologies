@@ -10,6 +10,7 @@ import AdminGroups from './Groups/AdminGroups';
 import AdminUsers from './Users/AdminUsers';
 import AdminTasks from './Tasks/AdminTasks';
 import {loadTasks} from '../../services/adminTasks/adminTasksActions';
+import {loadUsers} from '../../services/adminUsers/adminUsersActions';
 
 
 const Admin = () => {
@@ -22,6 +23,7 @@ const Admin = () => {
   React.useEffect(() => {
     dispatch((loadGroups()))
     dispatch((loadTasks()))
+    dispatch((loadUsers()))
   }, []);
   
   return (

@@ -6,8 +6,6 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import NavigationBar from "./components/NavigationBar";
 import Welcome from "./components/Welcome";
-import Book from "./components/Book/Book";
-import BookList from "./components/Book/BookList";
 import UserList from "./components/User/UserProfile";
 import Register from "./components/User/Register";
 import Login from "./components/User/Login";
@@ -41,9 +39,6 @@ const App = () => {
               <Route path="/task/:id" exact component={Task} />
               <Route path="/home" exact component={Home} />
               <Route path="/admin" exact component={Admin} />
-              <Route path="/add" exact component={Book} />
-              <Route path="/edit/:id" exact component={Book} />
-              <Route path="/list" exact component={BookList} />
               <Route path="/profile/:id" exact component={UserList} />
               <Route path="/register" exact component={Register} />
               <Route path="/login" exact component={Login} />

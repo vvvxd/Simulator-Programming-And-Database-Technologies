@@ -26,7 +26,7 @@ const AdminTasks = () => {
   const tasks = useSelector(({adminTasks}) => adminTasks.tasks)
   
   const delTask = () => {
-    dispatch(deleteTask(activeItem))
+    dispatch(deleteTask(activeItem.id))
     setActiveItem(null);
   }
   

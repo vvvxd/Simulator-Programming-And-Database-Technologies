@@ -3,6 +3,7 @@ package com.example.simulatordatabasetechnologies.rest;
 import com.example.simulatordatabasetechnologies.dto.DeleteRequestDTO;
 import com.example.simulatordatabasetechnologies.dto.GroupDTO;
 import com.example.simulatordatabasetechnologies.dto.TasksDTO;
+import com.example.simulatordatabasetechnologies.dto.UserAddDTO;
 import com.example.simulatordatabasetechnologies.service.UsersService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -98,6 +99,54 @@ public class UsersRestControllerV1 {
     public ResponseEntity<?> getListBestSolutionsTasks(@PathVariable long id) {
         try {
             return new ResponseEntity<>(usersService.getListBestSolutionsTasks(id), HttpStatus.OK);
+        } catch (RuntimeException e) {
+            log.debug(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+        }
+    }
+
+
+    @GetMapping("/get_users")
+    public ResponseEntity<?> getUsers() {
+        try {
+            return new ResponseEntity<>(usersService.getUsers(), HttpStatus.OK);
+        } catch (RuntimeException e) {
+            log.debug(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+        }
+    }
+
+
+    @PostMapping("/add_user")
+    @PreAuthorize("hasAuthority('admin_panel')")
+    public ResponseEntity<?> addUser(@RequestBody UserAddDTO data) {
+        try {
+            return new ResponseEntity<>(usersService.addUser(data), HttpStatus.OK);
+        } catch (RuntimeException e) {
+            log.debug(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+        }
+    }
+
+
+    @PostMapping("/update_user")
+    @PreAuthorize("hasAuthority('admin_panel')")
+    public ResponseEntity<?> updateUser(@RequestBody UserAddDTO data) {
+        try {
+            return new ResponseEntity<>(usersService.updateUser(data), HttpStatus.OK);
+        } catch (RuntimeException e) {
+            log.debug(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+        }
+    }
+
+
+    @PostMapping("/delete_user")
+    @PreAuthorize("hasAuthority('admin_panel')")
+    public ResponseEntity<?> deleteUser(@RequestBody DeleteRequestDTO data) {
+        try {
+            usersService.deleteUser(data.getId());
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (RuntimeException e) {
             log.debug(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);

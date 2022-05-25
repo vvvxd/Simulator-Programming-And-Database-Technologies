@@ -1,8 +1,6 @@
 package com.example.simulatordatabasetechnologies.service;
 
-import com.example.simulatordatabasetechnologies.dto.GroupDTO;
-import com.example.simulatordatabasetechnologies.dto.UserInfoDTO;
-import com.example.simulatordatabasetechnologies.dto.UserTasksStatsDTO;
+import com.example.simulatordatabasetechnologies.dto.*;
 
 import java.util.List;
 
@@ -24,4 +22,11 @@ public interface UsersService {
 
     List<UserTasksStatsDTO> getListBestSolutionsTasks(Long id);
 
+    List<UserAdminDTO> getUsers();
+
+    UserAddDTO addUser(UserAddDTO data);
+
+    UserAddDTO updateUser(UserAddDTO data);
+
+    void deleteUser(Long id);
 }

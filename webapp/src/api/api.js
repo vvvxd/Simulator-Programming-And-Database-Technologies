@@ -2,17 +2,13 @@ import axios from "axios";
 import {
   ADD_COMMENT,
   ADD_GROUP,
-  ADD_TASKS,
+  ADD_TASKS, ADD_USER,
   AUTH_URL,
   CHECK_SELECT,
-  DELETE_BOOK,
   DELETE_GROUP,
   DELETE_TASK,
+  DELETE_USER,
   EXECUTE_SELECT,
-  FETCH_ALL_BOOK,
-  FETCH_BOOK,
-  FETCH_LAN,
-  FETCH_TYPES,
   GET_ALL_TASKS,
   GET_COMMENTS,
   GET_LIST_BEST_SOLUTIONS_TASKS,
@@ -24,13 +20,12 @@ import {
   GROUPS,
   RANDOM_API,
   REGISTER_URL,
-  SAVE_BOOK,
-  SEARCH_BOOK,
   TASK_STATS,
   TASK_WRONG_QUERIES,
-  UPDATE_BOOK,
   UPDATE_GROUP,
   UPDATE_TASK,
+  UPDATE_USER,
+  USERS,
   WORST_TASK_QUERY
 } from './urls';
 
@@ -59,6 +54,36 @@ export const usersAPI = {
   },
   getListBestSolutionsTasks(id) {
     return axios.get(GET_LIST_BEST_SOLUTIONS_TASKS + "/" + id);
+  },
+  getUsers() {
+    return axios.get(USERS);
+  },
+  addUser(email, password, firstName, lastName, userGroupId, role) {
+    return axios.post(ADD_USER, {
+      id: null,
+      email: email,
+      password: password,
+      firstName: firstName,
+      lastName: lastName,
+      userGroupId: userGroupId,
+      role: role
+    })
+  },
+  updateUser(id, email, password, firstName, lastName, userGroupId, role) {
+    return axios.post(UPDATE_USER, {
+      id: id,
+      email: email,
+      password: password,
+      firstName: firstName,
+      lastName: lastName,
+      userGroupId: userGroupId,
+      role: role
+    })
+  },
+  deleteUser(id) {
+    return axios.post(DELETE_USER, {
+      id: id,
+    })
   },
 }
 
@@ -162,52 +187,4 @@ export const commentsARI = {
     });
   }
 }
-
-
-export const BookAPI = {
-  saveBook(book) {
-    return axios.post(SAVE_BOOK, book);
-  },
-  fetchBook(bookId) {
-    return axios.get(FETCH_BOOK + bookId);
-  },
-  updateBook(book) {
-    return axios.post(UPDATE_BOOK, book)
-  },
-  deleteBook(bookId) {
-    return axios.delete(DELETE_BOOK + bookId)
-  },
-  fetchLanguages() {
-    return axios.get(FETCH_LAN);
-  },
-  fetchTypes() {
-    return axios.get(FETCH_TYPES)
-  },
-  findAllBooks(currentPage, pageSize, user) {
-    return axios
-    .get(FETCH_ALL_BOOK +
-      "?pageNumber=" +
-      currentPage +
-      "&pageSize=" +
-      pageSize +
-      "&user=" +
-      user
-    )
-  },
-  searchData(search, currentPage, size, user) {
-    return axios
-    .get(
-      SEARCH_BOOK +
-      search +
-      "?page=" +
-      currentPage +
-      "&size=" +
-      size +
-      "&user=" +
-      user
-    );
-  }
-}
-
-
 

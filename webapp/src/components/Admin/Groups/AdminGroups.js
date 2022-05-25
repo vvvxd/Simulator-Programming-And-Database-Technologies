@@ -23,7 +23,7 @@ const AdminGroups = () => {
   const groups = useSelector(({group}) => group.groups)
   
   const deleteUserGroup=()=>{
-    dispatch(deleteGroup(activeItem))
+    dispatch(deleteGroup(activeItem.id))
     setActiveItem(null);
   }
   

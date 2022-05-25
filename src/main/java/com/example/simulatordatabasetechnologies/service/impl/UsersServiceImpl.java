@@ -1,12 +1,12 @@
 package com.example.simulatordatabasetechnologies.service.impl;
 
-import com.example.simulatordatabasetechnologies.dto.GroupDTO;
-import com.example.simulatordatabasetechnologies.dto.TasksDTO;
-import com.example.simulatordatabasetechnologies.dto.UserInfoDTO;
-import com.example.simulatordatabasetechnologies.dto.UserTasksStatsDTO;
+import com.example.simulatordatabasetechnologies.dto.*;
 import com.example.simulatordatabasetechnologies.model.*;
+import com.example.simulatordatabasetechnologies.repository.TasksRepository;
+import com.example.simulatordatabasetechnologies.repository.UserRepository;
 import com.example.simulatordatabasetechnologies.security.SecurityService;
 import com.example.simulatordatabasetechnologies.service.UsersService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +14,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -23,9 +24,15 @@ public class UsersServiceImpl implements UsersService {
     private EntityManager em;
 
     private final SecurityService securityService;
+    private final TasksRepository tasksRepository;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UsersServiceImpl(SecurityService securityService) {
+    public UsersServiceImpl(SecurityService securityService, TasksRepository tasksRepository, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.securityService = securityService;
+        this.tasksRepository = tasksRepository;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -210,4 +217,120 @@ public class UsersServiceImpl implements UsersService {
             return null;
         }
     }
+
+
+    @Override
+    public List<UserAdminDTO> getUsers() {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<UserAdminDTO> cq = cb.createQuery(UserAdminDTO.class);
+        Root<UserEntity> root = cq.from(UserEntity.class);
+
+        Subquery<Long> tasksSolved = cq.subquery(Long.class);
+        Root<TasksUsersEntity> rootTS = tasksSolved.from(TasksUsersEntity.class);
+        tasksSolved.select(cb.count(rootTS));
+        tasksSolved.where(cb.equal(rootTS.get(TasksUsersEntity_.usersId), root.get(UserEntity_.id)),
+                cb.equal(rootTS.get(TasksUsersEntity_.status), 1L));
+
+        Subquery<Long> tasksSent = cq.subquery(Long.class);
+        Root<QueryHistoryEntity> rootSE = tasksSent.from(QueryHistoryEntity.class);
+        tasksSent.select(cb.count(rootSE));
+        tasksSent.where(cb.equal(rootSE.get(QueryHistoryEntity_.userId), root.get(UserEntity_.id)));
+
+        Subquery<Long> tasksTotal = cq.subquery(Long.class);
+        Root<TasksUsersEntity> rootTT = tasksTotal.from(TasksUsersEntity.class);
+        tasksTotal.select(cb.count(rootTT));
+        tasksTotal.where(cb.equal(rootTT.get(TasksUsersEntity_.usersId), root.get(UserEntity_.id)));
+
+        cq.multiselect(
+                root.get(UserEntity_.id),
+                root.get(UserEntity_.firstName),
+                root.get(UserEntity_.lastName),
+                root.get(UserEntity_.email),
+                root.get(UserEntity_.userGroupId),
+                root.get(UserEntity_.role),
+                root.get(UserEntity_.status),
+                root.get(UserEntity_.firstEntry),
+                tasksSolved,
+                tasksSent,
+                tasksTotal
+        );
+
+        try {
+            return em.createQuery(cq).getResultList();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+
+    @Override
+    @Transactional
+    public UserAddDTO addUser(UserAddDTO data) {
+        Boolean present = userRepository.findByEmail(data.getEmail()).isPresent();
+        if (present.equals(true))
+            throw new RuntimeException("With this email, the user already exists");
+
+        UserEntity user = new UserEntity();
+        user.setFirstName(data.getFirstName());
+        user.setLastName(data.getLastName());
+        user.setUserGroupId(data.getUserGroupId());
+        user.setEmail(data.getEmail());
+        user.setPassword(passwordEncoder.encode(data.getPassword()));
+        user.setRole(Role.valueOf(data.getRole()));
+        user.setStatus(Status.ACTIVE);
+        user.setFirstEntry(LocalDateTime.now());
+        em.persist(user);
+
+        List<Long> listTasksId = tasksRepository.findAll().stream().map(TasksEntity::getId).toList();
+        listTasksId.forEach(v -> {
+            TasksUsersEntity entity = new TasksUsersEntity();
+            entity.setTasksId(v);
+            entity.setUsersId(user.getId());
+            em.persist(entity);
+        });
+
+        em.flush();
+
+        data.setId(user.getId());
+
+        return data;
+    }
+
+    @Override
+    @Transactional
+    public UserAddDTO updateUser(UserAddDTO data) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaUpdate<UserEntity> cu = cb.createCriteriaUpdate(UserEntity.class);
+        Root<UserEntity> root = cu.from(UserEntity.class);
+
+        cu.set(UserEntity_.email, data.getEmail());
+
+        if (data.getPassword() != null && !"".equals(data.getPassword()))
+            cu.set(UserEntity_.password, passwordEncoder.encode(data.getPassword()));
+
+        cu.set(UserEntity_.firstName, data.getFirstName());
+        cu.set(UserEntity_.lastName, data.getLastName());
+        cu.set(UserEntity_.userGroupId, data.getUserGroupId());
+        cu.set(UserEntity_.role, Role.valueOf(data.getRole()));
+
+        cu.where(cb.equal(root.get(UserEntity_.id), data.getId()));
+
+        em.createQuery(cu).executeUpdate();
+
+        return data;
+    }
+
+    @Override
+    @Transactional
+    public void deleteUser(Long id) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaUpdate<UserEntity> cu = cb.createCriteriaUpdate(UserEntity.class);
+        Root<UserEntity> root = cu.from(UserEntity.class);
+
+        cu.set(UserEntity_.status, Status.BANNED);
+
+        cu.where(cb.equal(root.get(UserEntity_.id), id));
+
+        em.createQuery(cu).executeUpdate();
+    }
+
 }
