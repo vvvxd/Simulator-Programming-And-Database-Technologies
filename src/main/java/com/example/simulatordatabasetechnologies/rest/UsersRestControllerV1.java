@@ -73,6 +73,16 @@ public class UsersRestControllerV1 {
         }
     }
 
+    @GetMapping("/get_user_info/{id}")
+    public ResponseEntity<?> getUserInfo(@PathVariable long id) {
+        try {
+            return new ResponseEntity<>( usersService.getUserInfo(id), HttpStatus.OK);
+        } catch (RuntimeException e) {
+            log.debug(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+        }
+    }
+
 
     @GetMapping("/get_list_solved_tasks/{id}")
     public ResponseEntity<?> getListSolvedTasks(@PathVariable long id) {

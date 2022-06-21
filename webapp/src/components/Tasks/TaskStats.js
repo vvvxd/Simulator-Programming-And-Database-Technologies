@@ -1,5 +1,5 @@
 import authToken from '../../utils/authToken';
-import React from 'react';
+import React, {useState} from 'react';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -10,11 +10,16 @@ import {useHistory} from 'react-router-dom';
 import {loadBest, loadDecisions, loadStats} from '../../services/stats/statsActions';
 import Spinner from 'react-bootstrap/Spinner';
 import Table from 'react-bootstrap/Table';
+import UsersUpdateModal from '../Admin/Users/UsersUpdateModal';
+import SqlModal from './SqlModal';
 
 const TaskStats = () => {
   if (localStorage.jwtToken) {
     authToken(localStorage.jwtToken);
   }
+  const [modalShow, setModalShow] = useState(false);
+  const [sql, setSql] = useState('');
+  
   const dispatch = useDispatch();
   let history = useHistory();
   
@@ -34,9 +39,14 @@ const TaskStats = () => {
     dispatch(loadDecisions(activeTaskId))
   }, []);
   
+  const showModal=(sql)=>{
+    setSql(sql);
+    setModalShow(true);
+  }
+  
   return (
     <>
-      <div className="container__mod">
+      <Card className={"border bg-light text-dark"}>
         <Container>
           <Row className="justify-content-center"
                style={{
@@ -57,27 +67,27 @@ const TaskStats = () => {
           }}>
             <Col lg={6}>
               <Card style={{
-                width: '55vh',
+                width: '48vh',
                 height: '29vh'
               }}>
                 <Card.Header>Статистика</Card.Header>
                 {isLoadingStats
                   ? (
                     <ListGroup variant="flush">
-                      <ListGroup.Item>
-                        <pre style={{margin: '0'}}>Авторов, которые решили {statsItem.authorsDecided}</pre>
+                      <ListGroup.Item style={listCss}>
+                       <div>Авторов, которые решили</div><div>{statsItem.authorsDecided}</div>
                       </ListGroup.Item>
-                      <ListGroup.Item>
-                        <pre style={{margin: '0'}}>Авторов, которые посылали {statsItem.authorsSent}</pre>
+                      <ListGroup.Item style={listCss}>
+                        <div>Авторов, которые посылали</div><div>{statsItem.authorsSent}</div>
                       </ListGroup.Item>
-                      <ListGroup.Item>
-                        <pre style={{margin: '0'}}>Решений послано {statsItem.totalAttempts}</pre>
+                      <ListGroup.Item style={listCss}>
+                        <div>Решений послано</div><div>{statsItem.totalAttempts}</div>
                       </ListGroup.Item>
-                      <ListGroup.Item>
-                        <pre style={{margin: '0'}}>Верно {statsItem.decidedRight}</pre>
+                      <ListGroup.Item style={listCss}>
+                        <div>Верно</div><div>{statsItem.decidedRight}</div>
                       </ListGroup.Item>
-                      <ListGroup.Item>
-                        <pre style={{margin: '0'}}>Неправильный ответ {statsItem.decidedWrong}</pre>
+                      <ListGroup.Item style={listCss}>
+                        <div>Неправильный ответ</div><div>{statsItem.decidedWrong}</div>
                       </ListGroup.Item>
                     </ListGroup>
                   )
@@ -87,28 +97,29 @@ const TaskStats = () => {
             </Col>
             <Col>
               <Card style={{
-                width: '55vh',
-                height: '29vh'
+                width: '48vh',
+                height: '29vh',
+                marginLeft:'40px'
               }}>
                 <Card.Header>Лучшее решение</Card.Header>
                 {isLoadingBest
                   ?
                   <ListGroup variant="flush">
                     <ListGroup variant="flush">
-                      <ListGroup.Item>
-                        <pre style={{margin: '0'}}>Номер {bestItem.id}</pre>
+                      <ListGroup.Item style={listCss}>
+                        <div>Номер</div><div>{bestItem.id}</div>
                       </ListGroup.Item>
-                      <ListGroup.Item>
-                        <pre style={{margin: '0'}}>Дата {bestItem.time}</pre>
+                      <ListGroup.Item style={listCss}>
+                        <div>Дата</div><div> {new Date(bestItem.time).toLocaleString()}</div>
                       </ListGroup.Item>
-                      <ListGroup.Item>
-                        <pre style={{margin: '0'}}>Автор {bestItem.firstName + ' ' + bestItem.lastName}  </pre>
+                      <ListGroup.Item style={listCss}>
+                        <div>Автор</div><div>{bestItem.firstName + ' ' + bestItem.lastName}</div>
                       </ListGroup.Item>
-                      <ListGroup.Item>
-                        <pre style={{margin: '0'}}>Стоимость запроса {bestItem.cost}</pre>
+                      <ListGroup.Item style={listCss}>
+                        <div>Стоимость запроса</div><div>{bestItem.cost}</div>
                       </ListGroup.Item>
-                      <ListGroup.Item>
-                        <pre style={{margin: '0'}}>Исходный код               ссылка sql</pre>
+                      <ListGroup.Item style={listCss}>
+                        <div>Исходный код</div><div onClick={()=>showModal(bestItem.sql)}>ссылка sql</div>
                       </ListGroup.Item>
                     </ListGroup>
                   </ListGroup>
@@ -138,10 +149,10 @@ const TaskStats = () => {
                       {decisionItems.map((item, id) => (
                         <tr key={id}>
                           <td>{item.id}</td>
-                          <td>{item.time}</td>
+                          <td>{ new Date(item.time).toLocaleString()}</td>
                           <td>{item.firstName + ' ' + item.lastName}</td>
                           <td>{item.cost}</td>
-                          <td>sql</td>
+                          <td onClick={()=>showModal(item.sql)}>sql</td>
                         </tr>
                       ))}
                       </tbody>
@@ -152,16 +163,22 @@ const TaskStats = () => {
             </Col>
           </Row>
         </Container>
-      </div>
+      </Card>
+      <SqlModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        sql={sql}
+      />
     </>
   );
 };
 
-const spinnerCss = {
-  position: "fixed",
-  top: "50%",
-  right: "50%",
-  zIndex: "1",
+const listCss = {
+  display: "flex",
+  justifyContent: "space-between",
+  margin: '0',
+  padding:'8px'
 };
+
 
 export default TaskStats;

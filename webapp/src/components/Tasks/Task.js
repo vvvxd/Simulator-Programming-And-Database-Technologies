@@ -137,7 +137,7 @@ const Task = () => {
       {value === 1
         ?
         (isLoaded
-          ? <div className="container__mod">
+          ?  <Card className={"border bg-light text-dark"}>
             <Container>
               <Row>
                 <Col lg={4} className="info_place">
@@ -170,7 +170,7 @@ const Task = () => {
                   <Row className="editor_place">
                     <Editor
                       value={inputValue}
-                      width="78vh"
+                      width="70vh"
                       height="35vh"
                       defaultLanguage="sql"
                       theme="light"
@@ -226,7 +226,7 @@ const Task = () => {
                   <Row className="table_place">
                     <div>
                       <Card bg="light" text="dark">
-                        <Card.Body style={{overflowY: "scroll", height: "40vh", width: "78vh"}}>
+                        <Card.Body style={{overflowY: "scroll", height: "40vh", width: "70vh"}}>
                           {isExecutingSql
                             ? <Table striped bordered hover>
                               <thead>
@@ -257,17 +257,17 @@ const Task = () => {
                 </Col>
               </Row>
             </Container>
-          </div>
+          </Card>
           
           : <Spinner animation="border" style={spinnerCss}/>)
         
         : (value === 2
             ? <DataSchema/>
-            : (<div className="container__mod">
+            : (<Card className={"border bg-light text-dark"}>
               <Container>
                 <Row>
                   <Card text="dark">
-                    <Card.Body style={{overflowY: "scroll", height: "60vh", width: "117vh"}}>
+                    <Card.Body style={{overflowY: "scroll", height: "60vh", width: "115vh"}}>
                       
                       {
                         isLoadingComment === true
@@ -291,7 +291,7 @@ const Task = () => {
                     <Form.Group>
                       <Form.Group>
                         <Form.Control onChange={onChangeComment} value={inputValueComment} ref={commentRef}
-                                      style={{width: "114vh"}} as="textarea" rows={4}/>
+                                      style={{width: "110vh"}} as="textarea" rows={4}/>
                       </Form.Group>
                     </Form.Group>
                     
@@ -301,7 +301,7 @@ const Task = () => {
         
                 </Row>
               </Container>
-            </div>)
+            </Card>)
         )
       }
     

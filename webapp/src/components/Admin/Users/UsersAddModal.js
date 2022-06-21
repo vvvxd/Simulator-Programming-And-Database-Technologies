@@ -138,7 +138,7 @@ const UsersAddModal = (props) => {
                 <option value="-1">Выберите роль</option>
                 <option>USER</option>
                 <option>ADMIN</option>
-                <option>SUPER_ADMIN</option>
+                {/*<option>SUPER_ADMIN</option>*/}
               </Form.Control>
             </InputGroup>
           </Form.Group>

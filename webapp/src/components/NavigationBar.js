@@ -61,7 +61,7 @@ const NavigationBar = () => {
     <Navbar style={toastCss} className={"border text-dark"} bg="light" variant="light">
       <Link to={auth.isLoggedIn ? "home" : ""} className="navbar-brand">
         <img
-          src="http://atpp.vstu.edu.ru/atpphead2.gif"
+          src="https://web.archive.org/web/20160405082458if_/http://atpp.vstu.edu.ru/atpphead2.gif"
           width="50"
           height="50"
           alt="brand"

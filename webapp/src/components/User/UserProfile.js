@@ -13,6 +13,7 @@ import {
   loadUnresolvedTasks
 } from '../../services/prifile/profileActions';
 import Spinner from 'react-bootstrap/Spinner';
+import Button from 'react-bootstrap/Button';
 
 
 const UserProfile = () => {
@@ -47,8 +48,7 @@ const UserProfile = () => {
   return (
     <Card className={"border bg-light text-dark"}>
       {
-        // !!auth.isLoggedIn
-        // ?
+ 
         <div className="container__mod">
           
           <Container>
@@ -66,6 +66,10 @@ const UserProfile = () => {
                   : 'Загрузка ...'
                 }
               </div>
+              <Button style={{
+                position: "absolute",
+                right: "75%",
+              }}>Редактировать профиль</Button>
             </Row>
             <Card.Header>Информация</Card.Header>
             {isInfoLoading
@@ -200,10 +204,6 @@ const UserProfile = () => {
             </Row>
           </Container>
         </div>
-        // :
-        // <Alert style={{backgroundColor: "#ffffff", color: "rgba(3,3,3,0.5)"}}>
-        //   Please login
-        // </Alert>
       }
     </Card>
   );

@@ -18,6 +18,7 @@ import {
   faUndo,
 } from "@fortawesome/free-solid-svg-icons";
 import { authenticateUser } from "../../services/index";
+import {useHistory} from 'react-router-dom';
 
 const Login = (props) => {
   const [error, setError] = useState();
@@ -36,19 +37,20 @@ const Login = (props) => {
   };
 
   const dispatch = useDispatch();
-
+  let history = useHistory();
+  
   const validateUser = () => {
     dispatch(authenticateUser(user.email, user.password))
       .then((response) => {
         console.log(response.data);
-        return props.history.push("/tasks");
+        return history.push("/tasks");
       })
-      .catch((error) => {
-        console.log(error.message);
-        setShow(true);
-        resetLoginForm();
-        setError("Неверный адрес электронной почты или пароль");
-      });
+      // .catch((error) => {
+      //   console.log(error.message);
+      //   setShow(true);
+      //   resetLoginForm();
+      //   setError("Неверный адрес электронной почты или пароль");
+      // });
   };
 
   const resetLoginForm = () => {

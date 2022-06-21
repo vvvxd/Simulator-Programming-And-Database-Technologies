@@ -6,6 +6,7 @@ import {faEnvelope, faLock, faUndo, faUser, faUserPlus, faUsers,} from "@fortawe
 import {registerUser} from "../../services/index";
 import MyToast from "../MyToast";
 import {loadGroups} from '../../services/group/groupActions';
+import {useHistory} from 'react-router-dom';
 
 const Register = (props) => {
   const [show, setShow] = useState(false);
@@ -29,7 +30,7 @@ const Register = (props) => {
   };
   
   const dispatch = useDispatch();
-  
+ 
   const isLoadingAllGroup = useSelector(({group}) => group.isLoadingAllGroup);
   const error = useSelector(({group}) => group.error);
   const groups = useSelector(({group}) => group.groups);
@@ -188,7 +189,7 @@ const Register = (props) => {
                 || user.userGroupId === "-1"
                 }
               >
-                <FontAwesomeIcon icon={faUserPlus}/> Register
+                <FontAwesomeIcon icon={faUserPlus}/> Регистрация
               </Button>{" "}
               <Button
                 size="sm"
@@ -196,7 +197,7 @@ const Register = (props) => {
                 variant="info"
                 onClick={resetRegisterForm}
               >
-                <FontAwesomeIcon icon={faUndo}/> Reset
+                <FontAwesomeIcon icon={faUndo}/> Сброс
               </Button>
             </Card.Footer>
           </Card>

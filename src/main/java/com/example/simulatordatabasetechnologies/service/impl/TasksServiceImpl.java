@@ -152,13 +152,13 @@ public class TasksServiceImpl implements TasksService {
 
         Subquery<Long> authorsDecided = cq.subquery(Long.class);
         Root<TasksUsersEntity> rootSq1 = authorsDecided.from(TasksUsersEntity.class);
-        authorsDecided.select(cb.count(rootSq1));
+        authorsDecided.select(cb.count(cb.count(rootSq1)));
         authorsDecided.where(cb.equal(rootSq1.get(TasksUsersEntity_.status), 1L));
         authorsDecided.groupBy(rootSq1.get(TasksUsersEntity_.usersId));
 
         Subquery<Long> authorsSent = cq.subquery(Long.class);
         Root<TasksUsersEntity> rootSq = authorsSent.from(TasksUsersEntity.class);
-        authorsSent.select(cb.count(rootSq));
+        authorsSent.select(cb.count(cb.count(rootSq)));
         authorsSent.groupBy(rootSq.get(TasksUsersEntity_.usersId));
 
         cq.multiselect(

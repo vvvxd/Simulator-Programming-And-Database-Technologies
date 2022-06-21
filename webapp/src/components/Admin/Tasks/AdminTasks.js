@@ -37,7 +37,7 @@ const AdminTasks = () => {
       }}>
         <Card>
           <Card.Header>Задачи</Card.Header>
-          <Card.Body style={{overflowY: "scroll", height: "70vh", width: "90vh",padding:"0"}}>
+          <Card.Body style={{overflowY: "scroll", height: "70vh", width: "85vh",padding:"0"}}>
             <Table responsive hover>
               <thead>
               <tr>

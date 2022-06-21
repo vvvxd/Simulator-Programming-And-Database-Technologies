@@ -34,7 +34,7 @@ const AdminGroups = () => {
       }}>
         <Card>
           <Card.Header>Группы</Card.Header>
-          <Card.Body style={{overflowY: "scroll", height: "70vh", width: "90vh"}}>
+          <Card.Body style={{overflowY: "scroll", height: "70vh", width: "85vh"}}>
             <Table responsive hover>
               <thead>
               <tr>

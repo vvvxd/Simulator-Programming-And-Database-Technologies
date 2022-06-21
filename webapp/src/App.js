@@ -46,7 +46,7 @@ const App = () => {
                 path="/logout"
                 exact
                 component={() => (
-                  <Login message="User Logged Out Successfully." />
+                  <Login message="Пользователь успешно вышел из системы." />
                 )}
               />
             </Switch>

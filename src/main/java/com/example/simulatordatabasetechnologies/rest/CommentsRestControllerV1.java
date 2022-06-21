@@ -33,7 +33,7 @@ public class CommentsRestControllerV1 {
 
     @PostMapping("/add_comment")
     @PreAuthorize("hasAuthority('study')")
-    public ResponseEntity<?> getGroups(@RequestBody CommentsRequestDTO data) {
+    public ResponseEntity<?> addComment(@RequestBody CommentsRequestDTO data) {
         try {
             commentsService.addComment(data);
             return new ResponseEntity<>(HttpStatus.OK);
