@@ -96,13 +96,8 @@ public class QueryServiceImpl implements QueryService {
             else {
                 QueryHistoryEntity worstTasksQuery = em.find(QueryHistoryEntity.class, task.getQueryHistoryId());
 
-                if(worstTasksQuery != null) {
-                    if (worstTasksQuery.getCost() <= userQueryHistory.getCost())
-                        task.setQueryHistoryId(userQueryHistory.getId());
-                }
-                else {
+                if (worstTasksQuery.getCost() <= userQueryHistory.getCost())
                     task.setQueryHistoryId(userQueryHistory.getId());
-                }
             }
         } else {
             task.setDecidedWrong(task.getDecidedWrong() + 1);
