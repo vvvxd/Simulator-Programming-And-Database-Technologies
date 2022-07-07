@@ -1,5 +1,5 @@
 import {
-  SET_ACTIVE_TASK_ID, SET_ERROR_EXECUTING_SQL,
+  SET_ACTIVE_TASK_ID, SET_CHECK_PAGE, SET_ERROR_EXECUTING_SQL,
   SET_INPUT_VALUE_SQL, SET_IS_EXECUTING_SQL,
   SET_SQL_ITEMS,
   SET_TASK,
@@ -12,6 +12,7 @@ const initialState = {
   isLoaded: false,
   error: false,
   activeTaskId:null,
+  CheckSelectResult: null,
 };
 
 const reducer = (state = initialState, action) => {
@@ -21,6 +22,7 @@ const reducer = (state = initialState, action) => {
         ...state,
         item: action.payload,
         isLoaded: true,
+        CheckSelectResult:  !(action.payload.status === null || action.payload.status ===0)
       };
     case SET_TASK_LOADED:
       return {
@@ -38,6 +40,11 @@ const reducer = (state = initialState, action) => {
         ...state,
         activeTaskId: action.payload,
       };
+    case SET_CHECK_PAGE:
+      return {
+        ...state,
+        CheckSelectResult: action.payload
+      }
     default:
       return state;
   }

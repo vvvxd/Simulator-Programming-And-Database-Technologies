@@ -1,6 +1,6 @@
 import {useDispatch, useSelector} from 'react-redux';
 import React, {useState} from 'react';
-import {fetchTask, setActiveTaskId} from '../../services/task/taskActions';
+import {fetchTask, setActiveTaskId, setCheckPage, setTask} from '../../services/task/taskActions';
 import ToggleButtonGroup from 'react-bootstrap/ToggleButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 import Row from 'react-bootstrap/Row';
@@ -15,7 +15,7 @@ import Spinner from 'react-bootstrap/Spinner';
 import DataSchema from './DataSchema';
 import {
   checkSelect,
-  executeSelect,
+  executeSelect, setCheckResult,
   setErrorCheckingSelect,
   setErrorExecutingSql,
   setInputValueSql
@@ -54,23 +54,33 @@ const Task = () => {
   const CheckSelectResult = useSelector(({query}) => query.CheckSelectResult);
   const isCheckingSelect = useSelector(({query}) => query.isCheckingSelect);
   const errorCheckingSelect = useSelector(({query}) => query.errorCheckingSelect);
-  
+
+  const  CheckStatusPage = useSelector(({task}) => task.CheckSelectResult) //Переменная показывает выполнил ли пользователь задание или нет
   const inputValueComment = useSelector(({comment}) => comment.inputValue);
   const isLoadingComment = useSelector(({comment}) => comment.isLoading);
   const errorComment = useSelector(({comment}) => comment.error);
   const itemsComment = useSelector(({comment}) => comment.items);
+
   
   React.useEffect(() => {
     dispatch(fetchTask(activeTaskId))
     dispatch(fetchComments(activeTaskId))
   }, []);
-  
+
+  React.useEffect(() => {
+    if (CheckStatusPage === true) {
+      history.push('/task_stats/' + activeTaskId);
+      dispatch(setCheckPage(false)) //обнуление страницы тк запрос идёт после условия(и по другому я хз ,как сделать)
+    }
+  }, [CheckStatusPage]);
+
   React.useEffect(() => {
     if (CheckSelectResult === true) {
       history.push('/task_stats/' + activeTaskId);
+      dispatch(setCheckResult(false)) //обнуление, чтобы повторно не загружались результаты
     }
   }, [CheckSelectResult]);
-  
+
   const onClickBack = () => {
     dispatch(setActiveTaskId(null));
     history.push('/tasks');

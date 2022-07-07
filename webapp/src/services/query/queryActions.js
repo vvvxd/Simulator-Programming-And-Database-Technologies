@@ -1,5 +1,6 @@
 import {queryAPI} from '../../api/api';
 import {
+  SET_CHECK_RESULT,
   SET_CHECK_SELECT,
   SET_ERROR_CHECKING_SELECT,
   SET_ERROR_EXECUTING_SQL,
@@ -61,6 +62,10 @@ export const setErrorCheckingSelect = (payload) => ({
   type: SET_ERROR_CHECKING_SELECT,
   payload: payload,
 });
+export const setCheckResult = (payload) =>({
+  type: SET_CHECK_RESULT,
+  payload,
+})
 
 
 export const checkSelect = (sql, taskId) => (dispatch) => {

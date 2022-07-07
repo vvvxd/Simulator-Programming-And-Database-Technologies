@@ -1,9 +1,10 @@
 import {
+  SET_CHECK_RESULT,
   SET_CHECK_SELECT, SET_ERROR_CHECKING_SELECT,
   SET_ERROR_EXECUTING_SQL, SET_INPUT_VALUE_SQL, SET_IS_CHECKING_SELECT,
   SET_IS_EXECUTING_SQL,
   SET_SQL_ITEMS,
-  
+
 } from './queryTypes';
 
 const initialState = {
@@ -57,6 +58,11 @@ const reducer = (state = initialState, action) => {
         errorCheckingSelect: action.payload,
         isCheckingSelect: true,
       };
+    case SET_CHECK_RESULT:
+      return {
+        ...state,
+        CheckSelectResult: action.payload
+      }
     default:
       return state;
   }
