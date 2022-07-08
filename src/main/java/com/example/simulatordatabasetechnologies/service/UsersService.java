@@ -29,4 +29,5 @@ public interface UsersService {
     UserAddDTO updateUser(UserAddDTO data);
 
     void deleteUser(Long id);
+    ProfileDTO profileUpdate(ProfileDTO data);
 }

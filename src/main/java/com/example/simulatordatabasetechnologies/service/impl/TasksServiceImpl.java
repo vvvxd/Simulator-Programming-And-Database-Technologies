@@ -4,6 +4,7 @@ import com.example.simulatordatabasetechnologies.dto.*;
 import com.example.simulatordatabasetechnologies.model.*;
 import com.example.simulatordatabasetechnologies.security.SecurityService;
 import com.example.simulatordatabasetechnologies.service.TasksService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +15,7 @@ import javax.persistence.criteria.*;
 import java.util.List;
 
 @Service
+@Slf4j
 public class TasksServiceImpl implements TasksService {
     @PersistenceContext
     private EntityManager em;
@@ -120,7 +122,7 @@ public class TasksServiceImpl implements TasksService {
         TasksEntity task = em.find(TasksEntity.class, taskId);
         if (task == null)
             throw new RuntimeException("Задание не найдено");
-
+        log.debug(task.getTitle());
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<QueryDTO> cq = cb.createQuery(QueryDTO.class);
         Root<QueryHistoryEntity> root = cq.from(QueryHistoryEntity.class);
@@ -140,7 +142,6 @@ public class TasksServiceImpl implements TasksService {
         );
 
         cq.where(cb.equal(root.get(QueryHistoryEntity_.result), 1L));
-
         return em.createQuery(cq).getResultList();
     }
 

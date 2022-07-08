@@ -22,7 +22,7 @@ import {
   REGISTER_URL,
   TASK_STATS,
   TASK_WRONG_QUERIES,
-  UPDATE_GROUP,
+  UPDATE_GROUP, UPDATE_PROFILE,
   UPDATE_TASK,
   UPDATE_USER,
   USERS,
@@ -78,6 +78,15 @@ export const usersAPI = {
       lastName: lastName,
       userGroupId: userGroupId,
       role: role
+    })
+  },
+  updateProfile(id, email, firstname, lastname, password){
+    return axios.post(UPDATE_PROFILE, {
+      id: id,
+      email: email,
+      password: password,
+      firstName: firstname,
+      lastName: lastname,
     })
   },
   deleteUser(id) {

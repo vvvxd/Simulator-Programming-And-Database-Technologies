@@ -36,5 +36,6 @@ export const USERS = "http://localhost:8080/api/v1/users/get_users";
 export const ADD_USER = "http://localhost:8080/api/v1/users/add_user";
 export const UPDATE_USER = "http://localhost:8080/api/v1/users/update_user";
 export const DELETE_USER = "http://localhost:8080/api/v1/users/delete_user";
+export const UPDATE_PROFILE = "http://localhost:8080/api/v1/users/update_profile";
 
 export const RANDOM_API = "https://randomapi.com/api/6de6abfedb24f889e0b5f675edc50deb?fmt=raw&sole";

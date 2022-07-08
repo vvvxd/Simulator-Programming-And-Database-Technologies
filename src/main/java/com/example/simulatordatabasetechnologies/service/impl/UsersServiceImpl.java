@@ -318,6 +318,27 @@ public class UsersServiceImpl implements UsersService {
 
         return data;
     }
+    @Override
+    @Transactional
+    public ProfileDTO profileUpdate(ProfileDTO data) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaUpdate<UserEntity> cu = cb.createCriteriaUpdate(UserEntity.class);
+        Root<UserEntity> root = cu.from(UserEntity.class);
+
+        cu.set(UserEntity_.email, data.getEmail());
+
+        if (data.getPassword() != null && !"".equals(data.getPassword()))
+            cu.set(UserEntity_.password, passwordEncoder.encode(data.getPassword()));
+
+        cu.set(UserEntity_.firstName, data.getFirstName());
+        cu.set(UserEntity_.lastName, data.getLastName());
+
+        cu.where(cb.equal(root.get(UserEntity_.id), data.getId()));
+
+        em.createQuery(cu).executeUpdate();
+
+        return data;
+    }
 
     @Override
     @Transactional

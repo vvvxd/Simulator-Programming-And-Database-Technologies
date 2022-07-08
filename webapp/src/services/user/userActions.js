@@ -1,5 +1,6 @@
 import * as UT from "./userTypes";
 import {usersAPI} from '../../api/api';
+import {loadInfo} from "../prifile/profileActions";
 
 export const fetchUsers = () => {
   return (dispatch) => {
@@ -25,7 +26,9 @@ export const registerUser = (userObject) => async (dispatch) => {
     return Promise.reject(error);
   }
 };
-
+export const updateProfile = (id, email, firstName, lastName, password) => (dispatch) => {
+  usersAPI.updateProfile(id, email, firstName, lastName, password).then(() => dispatch(loadInfo(id)))
+}
 const userRequest = () => {
   return {
     type: UT.USER_REQUEST,

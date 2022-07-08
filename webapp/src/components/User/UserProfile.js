@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {Card, Container, Row} from "react-bootstrap";
 import authToken from '../../utils/authToken';
@@ -14,6 +14,7 @@ import {
 } from '../../services/prifile/profileActions';
 import Spinner from 'react-bootstrap/Spinner';
 import Button from 'react-bootstrap/Button';
+import UpdateUser from "./UpdateUser";
 
 
 const UserProfile = () => {
@@ -23,7 +24,7 @@ const UserProfile = () => {
   let {id} = useParams();
   
   const dispatch = useDispatch();
-  
+  const [updateShow, setUpdateShow] = useState(false);
   const auth = useSelector((state) => state.auth);
   
   const isInfoLoading = useSelector(({profile}) => profile.isInfoLoading);
@@ -69,7 +70,7 @@ const UserProfile = () => {
               <Button style={{
                 position: "absolute",
                 right: "75%",
-              }}>Редактировать профиль</Button>
+              }} onClick={() => setUpdateShow(true)}>Редактировать профиль</Button>
             </Row>
             <Card.Header>Информация</Card.Header>
             {isInfoLoading
@@ -202,6 +203,12 @@ const UserProfile = () => {
                 </Card>
               </Col>
             </Row>
+            <UpdateUser
+                show={updateShow}
+                onHide={() => setUpdateShow(false)}
+                item={{...info, password:""}}
+                id={id}
+            />
           </Container>
         </div>
       }
