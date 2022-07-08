@@ -38,7 +38,8 @@ const reducer = (state = initialState, action) => {
     case SET_ACTIVE_TASK_ID:
       return {
         ...state,
-        activeTaskId: action.payload,
+        activeTaskId: action.payload.id,
+        CheckSelectResult:  !(action.payload.status === null || action.payload.status ===0)
       };
     case SET_CHECK_PAGE:
       return {

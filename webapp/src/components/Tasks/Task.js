@@ -55,7 +55,7 @@ const Task = () => {
   const isCheckingSelect = useSelector(({query}) => query.isCheckingSelect);
   const errorCheckingSelect = useSelector(({query}) => query.errorCheckingSelect);
 
-  const  CheckStatusPage = useSelector(({task}) => task.CheckSelectResult) //Переменная показывает выполнил ли пользователь задание или нет
+  const CheckStatusPage = useSelector(({task}) => task.CheckSelectResult) //Переменная показывает выполнил ли пользователь задание или нет
   const inputValueComment = useSelector(({comment}) => comment.inputValue);
   const isLoadingComment = useSelector(({comment}) => comment.isLoading);
   const errorComment = useSelector(({comment}) => comment.error);

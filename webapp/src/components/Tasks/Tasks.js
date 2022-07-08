@@ -30,8 +30,11 @@ const Tasks = (props) => {
     dispatch(fetchTasks())
   }, []);
   
-  const onClickTable = (id) => {
-    dispatch(setActiveTaskId(id));
+  const onClickTable = (id, status) => {
+    dispatch(setActiveTaskId({
+      id:id,
+      status:status
+    }));//Статус для отрисовки страницы сразу до запроса
     history.push('/task/' + id);
   };
   
@@ -50,7 +53,7 @@ const Tasks = (props) => {
           </thead>
           <tbody>
           {items.map((item, id) => (
-            <tr key={item.id} onClick={() => onClickTable(item.id)}>
+            <tr key={item.id} onClick={() => onClickTable(item.id, item.status)}>
               <td>{
                 item.status == null
                   ? <FontAwesomeIcon icon={faCircle} aria-hidden="true"/>
