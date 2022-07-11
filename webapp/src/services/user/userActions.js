@@ -26,8 +26,11 @@ export const registerUser = (userObject) => async (dispatch) => {
     return Promise.reject(error);
   }
 };
-export const updateProfile = (id, email, firstName, lastName, password) => (dispatch) => {
-  usersAPI.updateProfile(id, email, firstName, lastName, password).then(() => dispatch(loadInfo(id)))
+export const updateProfile = (id, firstName, lastName, password) => (dispatch) => {
+  usersAPI.updateProfile(id, firstName, lastName, password).then(() => dispatch(loadInfo(id)))
+}
+export const updateUser = (id, email, password, firstName, lastName, userGroupId, role) => (dispatch) => {
+  usersAPI.updateUser(id, email, password, firstName, lastName, userGroupId, role).then(() => dispatch(loadInfo(id)))
 }
 const userRequest = () => {
   return {

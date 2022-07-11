@@ -25,7 +25,7 @@ const UpdateUser = (props) => {
     };
 
     const onClickUpdateUser = () => {
-        dispatch(updateProfile(props.id, user.email, user.firstName, user.lastName, user.password))
+        dispatch(updateProfile(props.id, user.firstName, user.lastName, user.password))
         hide();
     }
 
@@ -79,23 +79,6 @@ const UpdateUser = (props) => {
                                 onChange={userChange}
                                 className={"bg-light text-dark"}
                                 placeholder="Введите фамилию"
-                            />
-                        </InputGroup>
-                    </Form.Group>
-                </Form.Row>
-                <Form.Row>
-                    <Form.Group as={Col}>
-                        Сменить Email:
-                        <InputGroup>
-                            <FormControl
-                                required
-                                autoComplete="off"
-                                type="text"
-                                name="email"
-                                value={user.email}
-                                onChange={userChange}
-                                className={"bg-light text-dark"}
-                                placeholder="Введите Email"
                             />
                         </InputGroup>
                     </Form.Group>

@@ -111,7 +111,7 @@ const AdminUsers = () => {
       <UsersUpdateModal
         show={updateShow}
         onHide={() => setUpdateShow(false)}
-        item={{...activeItem}}
+        item={{...activeItem, password:""}}
       />
     </>
   )

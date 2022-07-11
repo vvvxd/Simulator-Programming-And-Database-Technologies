@@ -80,10 +80,9 @@ export const usersAPI = {
       role: role
     })
   },
-  updateProfile(id, email, firstname, lastname, password){
+  updateProfile(id, firstname, lastname, password){
     return axios.post(UPDATE_PROFILE, {
       id: id,
-      email: email,
       password: password,
       firstName: firstname,
       lastName: lastname,

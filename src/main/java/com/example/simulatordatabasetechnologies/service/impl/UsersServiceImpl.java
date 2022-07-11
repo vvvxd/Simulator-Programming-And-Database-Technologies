@@ -325,8 +325,6 @@ public class UsersServiceImpl implements UsersService {
         CriteriaUpdate<UserEntity> cu = cb.createCriteriaUpdate(UserEntity.class);
         Root<UserEntity> root = cu.from(UserEntity.class);
 
-        cu.set(UserEntity_.email, data.getEmail());
-
         if (data.getPassword() != null && !"".equals(data.getPassword()))
             cu.set(UserEntity_.password, passwordEncoder.encode(data.getPassword()));
 

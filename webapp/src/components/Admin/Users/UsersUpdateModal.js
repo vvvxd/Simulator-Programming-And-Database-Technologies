@@ -5,6 +5,7 @@ import {Col, Form, FormControl, InputGroup} from 'react-bootstrap';
 import {useDispatch, useSelector} from 'react-redux';
 import {updateGroup} from '../../../services/group/groupActions';
 import {updateTask} from '../../../services/adminTasks/adminTasksActions';
+import {updateUser} from "../../../services";
 
 const UsersUpdateModal = (props) => {
   
@@ -24,8 +25,7 @@ const UsersUpdateModal = (props) => {
   };
   
   const onClickUpdateUser = () => {
-    dispatch(updateTask(user.id, user.referenceQuery,
-      user.title, user.serialNumber, user.description))
+    dispatch(updateUser(user.id, user.email, user.password, user.firstName, user.lastName, user.userGroupId, user.role))
     hide();
   }
   
