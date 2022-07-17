@@ -51,6 +51,22 @@ public class UsersServiceImpl implements UsersService {
             return null;
         }
     }
+    @Override
+    public GroupDTO getGroup(Long id) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery<GroupDTO> cq = cb.createQuery(GroupDTO.class);
+        Root<UserGroupEntity> root = cq.from(UserGroupEntity.class);
+        cq.where(cb.equal(root.get(UserGroupEntity_.id), id));
+        cq.multiselect(root.get(UserGroupEntity_.id),
+                root.get(UserGroupEntity_.name),
+                root.get(UserGroupEntity_.shortName));
+
+        try {
+            return em.createQuery(cq).getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
 
     @Override
     @Transactional
@@ -117,7 +133,9 @@ public class UsersServiceImpl implements UsersService {
         tasksTotal.select(cb.count(rootTT));
         tasksTotal.where(cb.equal(rootTT.get(TasksUsersEntity_.usersId), id));
 
-        cq.multiselect(root.get(UserEntity_.firstName),
+        cq.multiselect(
+                root.get(UserEntity_.id),
+                root.get(UserEntity_.firstName),
                 root.get(UserEntity_.lastName),
                 root.get(UserEntity_.email),
                 groupJoin.get(UserGroupEntity_.shortName),

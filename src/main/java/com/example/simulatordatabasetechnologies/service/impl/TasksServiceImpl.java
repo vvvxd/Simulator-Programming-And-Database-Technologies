@@ -2,6 +2,7 @@ package com.example.simulatordatabasetechnologies.service.impl;
 
 import com.example.simulatordatabasetechnologies.dto.*;
 import com.example.simulatordatabasetechnologies.model.*;
+import com.example.simulatordatabasetechnologies.repository.TasksRepository;
 import com.example.simulatordatabasetechnologies.security.SecurityService;
 import com.example.simulatordatabasetechnologies.service.TasksService;
 import org.springframework.stereotype.Service;

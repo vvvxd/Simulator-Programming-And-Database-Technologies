@@ -94,41 +94,4 @@ public class TasksRestControllerV1 {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
-
-    @PostMapping("/add_tasks")
-    @PreAuthorize("hasAuthority('admin_panel')")
-    public ResponseEntity<?> addTasks(@RequestBody TasksRequestDTO request) {
-        try {
-            TasksRequestDTO tasks = tasksService.addTask(request);
-            return new ResponseEntity<>(tasks, HttpStatus.OK);
-        } catch (RuntimeException e) {
-            log.debug(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
-        }
-    }
-
-
-    @PostMapping("/update_task")
-    @PreAuthorize("hasAuthority('admin_panel')")
-    public ResponseEntity<?> updateTask(@RequestBody TasksRequestDTO data) {
-        try {
-            return new ResponseEntity<>(tasksService.updateTask(data), HttpStatus.OK);
-        } catch (RuntimeException e) {
-            log.debug(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
-        }
-    }
-
-
-    @PostMapping("/delete_task")
-    @PreAuthorize("hasAuthority('admin_panel')")
-    public ResponseEntity<?> deleteTask(@RequestBody DeleteRequestDTO data) {
-        try {
-            tasksService.deleteTask(data.getId());
-            return new ResponseEntity<>(HttpStatus.OK);
-        } catch (RuntimeException e) {
-            log.debug(e.getMessage());
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
-        }
-    }
 }
