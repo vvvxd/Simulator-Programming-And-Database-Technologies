@@ -1,11 +1,22 @@
-import {Create, Datagrid, DeleteButton, Edit, EditButton, List, SimpleForm, TextField, TextInput} from "react-admin";
+import {
+    Create,
+    Datagrid,
+    WrapperField,
+    Edit,
+    EditButton,
+    List,
+    SimpleForm,
+    TextField,
+    TextInput,
+    DeleteButton
+} from "react-admin";
 import React from "react";
 import {RichTextInput} from "ra-input-rich-text";
 
 export const TaskList = () => (
     <List>
         <>
-            <Datagrid>
+            <Datagrid rowClick={"edit"}>
                 <TextField source="id" />
                 <TextField source="referenceQuery" />
                 <TextField source="title" />
@@ -15,14 +26,12 @@ export const TaskList = () => (
                 <TextField source="decidedWrong" />
                 <TextField source="totalAttempts" />
                 <TextField source="queryHistoryId" />
-                <EditButton basePath="/tasks"/>
-                <DeleteButton basePath="/tasks"/>
             </Datagrid>
         </>
     </List>
 )
 export const TaskCreate = (props) => (
-    <Create {...props}>
+    <Create {...props} redirect="list">
         <SimpleForm>
             <TextInput source="referenceQuery" multiline={true} fullWidth={true}/>
             <TextInput source="title" multiline={true} fullWidth={true}/>

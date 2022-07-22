@@ -2,20 +2,19 @@ import {DeleteButton, EditButton, Create, Datagrid, Edit, List, SimpleForm, Text
 import React from "react";
 
 export const GroupList = () => (
-    <List>
+    <List sx={{width: 800, marginLeft: 20
+}}>
         <>
-            <Datagrid>
+            <Datagrid rowClick={"edit"}>
                 <TextField source="id" />
                 <TextField source="name" />
                 <TextField source="shortName" />
-                <EditButton basePath="/groups"/>
-                <DeleteButton basePath="/groups"/>
             </Datagrid>
         </>
     </List>
 )
 export const GroupCreate = (props) => (
-    <Create {...props}>
+    <Create {...props} redirect="list">
         <SimpleForm>
             <TextInput source="name"/>
             <TextInput source="shortName"/>

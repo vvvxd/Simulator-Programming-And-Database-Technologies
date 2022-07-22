@@ -1,10 +1,11 @@
 import {Edit, ReferenceInput, PasswordInput, SelectInput, Create, Datagrid, DeleteButton, EditButton, List, SimpleForm, TextField, TextInput} from "react-admin";
 import React from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {loadGroups} from "../../../services/group/groupActions";
 export const UserList = () => (
-    <List>
-            <Datagrid>
+    <div className={"my-list"}>
+    <List sx={{width: 1000, margin: 0
+    }}>
+            <Datagrid className={"my-list"} rowClick={"edit"}>
                 <TextField source="id" />
                 <TextField source="firstName" />
                 <TextField source="lastName" />
@@ -16,15 +17,14 @@ export const UserList = () => (
                 <TextField source="tasksSolved" />
                 <TextField source="tasksSent" />
                 <TextField source="tasksTotal" />
-                <EditButton basePath="/users"/>
-                <DeleteButton basePath="/users"/>
             </Datagrid>
     </List>
+    </div>
 )
 export const UserCreate = (props) => {
 
     return (
-    <Create {...props}>
+    <Create {...props} redirect="list">
         <SimpleForm>
             <TextInput source="email" multiline={true} fullWidth={true}/>
             <PasswordInput source="password"/>
