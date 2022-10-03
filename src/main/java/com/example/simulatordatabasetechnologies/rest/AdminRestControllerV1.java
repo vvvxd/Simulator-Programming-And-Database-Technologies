@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/api/v1/admin")
 @CrossOrigin(origins="http://localhost:3000")
 @Slf4j
-@PreAuthorize("hasAuthority('admin_panel')")
+
 public class AdminRestControllerV1 {
     private final UsersService usersService;
     private final TasksService tasksService;
