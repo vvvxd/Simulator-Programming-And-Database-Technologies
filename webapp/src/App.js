@@ -14,7 +14,7 @@ import Home from "./components/Home";
 import Tasks from './components/Tasks/Tasks';
 import Task from './components/Tasks/Task';
 import TaskStats from './components/Tasks/TaskStats';
-import Admin from './components/Admin/Admin';
+import Admins from "./components/Admin/Admins";
 
 const App = () => {
   window.onbeforeunload = (event) => {
@@ -28,7 +28,8 @@ const App = () => {
 
   return (
     <Router>
-      <NavigationBar />
+      <NavigationBar/>
+      <Route path="/admin" exact component={Admins}/>
       <Container>
         <Row>
           <Col xl={12} className={"margin-top"}>
@@ -38,7 +39,7 @@ const App = () => {
               <Route path="/task_stats/:id" exact component={TaskStats} />
               <Route path="/task/:id" exact component={Task} />
               <Route path="/home" exact component={Home} />
-              <Route path="/admin" exact component={Admin} />
+              {/*<Route path="/admin" exact component={Admins}/>*/}
               <Route path="/profile/:id" exact component={UserList} />
               <Route path="/register" exact component={Register} />
               <Route path="/login" exact component={Login} />

@@ -10,7 +10,6 @@ import {useHistory} from 'react-router-dom';
 import {loadBest, loadDecisions, loadStats} from '../../services/stats/statsActions';
 import Spinner from 'react-bootstrap/Spinner';
 import Table from 'react-bootstrap/Table';
-import UsersUpdateModal from '../Admin/Users/UsersUpdateModal';
 import SqlModal from './SqlModal';
 
 const TaskStats = () => {

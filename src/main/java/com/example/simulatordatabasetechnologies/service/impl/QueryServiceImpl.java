@@ -119,13 +119,13 @@ public class QueryServiceImpl implements QueryService {
 
         jdbcTemplate.update("EXPLAIN PLAN set STATEMENT_ID = '" + uuid + "' FOR " + sql);
 
-        Map<String, Object> cost = jdbcTemplate.queryForMap("select DISTINCT p.io_cost cost from plan_table p" +
+        List<Map<String, Object>> cost = jdbcTemplate.queryForList("select DISTINCT p.io_cost cost from plan_table p" +
                 " where p.STATEMENT_ID = '" + uuid + "' ");
 
         jdbcTemplate.update("delete from plan_table p " +
                 "where p.id = 0 and p.STATEMENT_ID = '" + uuid + "' ");
 
-        return (BigDecimal) cost.get("COST");
+        return (BigDecimal) cost.get(0).get("COST");
     }
 
     @Override

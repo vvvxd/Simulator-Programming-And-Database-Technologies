@@ -1,0 +1,15 @@
+a.text:active, /* активная/посещенная ссылка */
+a.text:hover,  /* при наведении */
+a.text {
+    text-decoration: none;
+    color: white;
+}
+
+.my-css{
+    margin: auto;
+}
+
+.my-menu{
+    width: 100px;
+    color: #5cb85c;
+}
