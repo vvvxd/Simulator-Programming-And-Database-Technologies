@@ -48,7 +48,7 @@ public class UsersServiceImpl implements UsersService {
         try {
             return em.createQuery(cq).getResultList();
         } catch (NoResultException e) {
-            return null;
+            throw new NoResultException("Группы отсутствуют");
         }
     }
     @Override
@@ -64,7 +64,7 @@ public class UsersServiceImpl implements UsersService {
         try {
             return em.createQuery(cq).getSingleResult();
         } catch (NoResultException e) {
-            return null;
+            throw new NoResultException(String.format("Отсутствует группа с id:%s", id));
         }
     }
 
@@ -149,7 +149,7 @@ public class UsersServiceImpl implements UsersService {
         try {
             return em.createQuery(cq).getSingleResult();
         } catch (NoResultException e) {
-            return null;
+            throw new NoResultException(String.format("Отсутствует информация об пользователя с id:%s", id));
         }
     }
 
@@ -177,7 +177,7 @@ public class UsersServiceImpl implements UsersService {
         try {
             return em.createQuery(cq).getResultList();
         } catch (NoResultException e) {
-            return null;
+            throw new NoResultException(String.format("Отсутствует информация об выполненных заданий у пользователя с id:%s", id));
         }
     }
 
@@ -205,7 +205,7 @@ public class UsersServiceImpl implements UsersService {
         try {
             return em.createQuery(cq).getResultList();
         } catch (NoResultException e) {
-            return null;
+            throw new NoResultException(String.format("Отсутствует информация об не выполненных заданий у пользователя с id:%s", id));
         }
     }
 
@@ -232,7 +232,7 @@ public class UsersServiceImpl implements UsersService {
         try {
             return em.createQuery(cq).getResultList();
         } catch (NoResultException e) {
-            return null;
+            throw new NoResultException(String.format("Отсутствует информация об лучших выполнений заданий у пользователя с id:%s", id));
         }
     }
 
@@ -276,7 +276,7 @@ public class UsersServiceImpl implements UsersService {
         try {
             return em.createQuery(cq).getResultList();
         } catch (NoResultException e) {
-            return null;
+            throw new NoResultException("Пользователи не найдены");
         }
     }
 
@@ -329,6 +329,26 @@ public class UsersServiceImpl implements UsersService {
         cu.set(UserEntity_.lastName, data.getLastName());
         cu.set(UserEntity_.userGroupId, data.getUserGroupId());
         cu.set(UserEntity_.role, Role.valueOf(data.getRole()));
+
+        cu.where(cb.equal(root.get(UserEntity_.id), data.getId()));
+
+        em.createQuery(cu).executeUpdate();
+
+        return data;
+    }
+
+    @Override
+    @Transactional
+    public ProfileDTO profileUpdate(ProfileDTO data) {
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaUpdate<UserEntity> cu = cb.createCriteriaUpdate(UserEntity.class);
+        Root<UserEntity> root = cu.from(UserEntity.class);
+
+        if (data.getPassword() != null && !"".equals(data.getPassword()))
+            cu.set(UserEntity_.password, passwordEncoder.encode(data.getPassword()));
+
+        cu.set(UserEntity_.firstName, data.getFirstName());
+        cu.set(UserEntity_.lastName, data.getLastName());
 
         cu.where(cb.equal(root.get(UserEntity_.id), data.getId()));
 

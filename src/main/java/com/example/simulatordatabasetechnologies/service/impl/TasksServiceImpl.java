@@ -1,6 +1,7 @@
 package com.example.simulatordatabasetechnologies.service.impl;
 
 import com.example.simulatordatabasetechnologies.dto.*;
+import com.example.simulatordatabasetechnologies.exception.NotFoundException;
 import com.example.simulatordatabasetechnologies.model.*;
 import com.example.simulatordatabasetechnologies.repository.TasksRepository;
 import com.example.simulatordatabasetechnologies.security.SecurityService;
@@ -29,7 +30,7 @@ public class TasksServiceImpl implements TasksService {
     public List<TasksDTO> getUserTasks() {
         UserEntity userEntity = securityService.getCurrentUser();
         if (userEntity == null)
-            throw new RuntimeException("Пользователь не найден");
+            throw new NotFoundException("Пользователь не найден");
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<TasksDTO> cq = cb.createQuery(TasksDTO.class);
@@ -51,7 +52,7 @@ public class TasksServiceImpl implements TasksService {
         try {
             return em.createQuery(cq).getResultList();
         } catch (NoResultException e) {
-            return null;
+            throw new NoResultException(String.format("Не существует заданий для пользователя с id:%s", userEntity.getId()));
         }
     }
 
@@ -59,7 +60,7 @@ public class TasksServiceImpl implements TasksService {
     public TasksDTO getTaskInfo(Long taskId) {
         UserEntity userEntity = securityService.getCurrentUser();
         if (userEntity == null)
-            throw new RuntimeException("Пользователь не найден");
+            throw new NotFoundException("Пользователь не найден");
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<TasksDTO> cq = cb.createQuery(TasksDTO.class);
@@ -82,7 +83,7 @@ public class TasksServiceImpl implements TasksService {
         try {
             return em.createQuery(cq).getSingleResult();
         } catch (NoResultException e) {
-            return null;
+            throw new NoResultException(String.format("Не существует задания для пользователя с id:%s", userEntity.getId()));
         }
     }
 
@@ -91,7 +92,7 @@ public class TasksServiceImpl implements TasksService {
     public QueryDTO getWorstTaskQuery(Long taskId) {
         TasksEntity task = em.find(TasksEntity.class, taskId);
         if (task == null)
-            throw new RuntimeException("Задание не найдено");
+            throw new NotFoundException(String.format("Задание с id:%s не найдено", taskId));
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<QueryDTO> cq = cb.createQuery(QueryDTO.class);
@@ -113,14 +114,18 @@ public class TasksServiceImpl implements TasksService {
 
         cq.where(cb.equal(root.get(QueryHistoryEntity_.id), task.getQueryHistoryId()));
 
-        return em.createQuery(cq).getSingleResult();
+        try {
+            return em.createQuery(cq).getSingleResult();
+        } catch (NoResultException e) {
+            throw new NoResultException(String.format("Не существует запроса у задания с id:%s", taskId));
+        }
     }
 
     @Override
     public List<QueryDTO> getTaskWrongQueries(Long taskId) {
         TasksEntity task = em.find(TasksEntity.class, taskId);
         if (task == null)
-            throw new RuntimeException("Задание не найдено");
+            throw new NotFoundException(String.format("Задание с id:%s не найдено", taskId));
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<QueryDTO> cq = cb.createQuery(QueryDTO.class);
@@ -142,7 +147,11 @@ public class TasksServiceImpl implements TasksService {
 
         cq.where(cb.equal(root.get(QueryHistoryEntity_.result), 1L));
 
-        return em.createQuery(cq).getResultList();
+        try {
+            return em.createQuery(cq).getResultList();
+        } catch (NoResultException e) {
+            throw new NoResultException(String.format("Не существует запросов у задания с id:%s", taskId));
+        }
     }
 
     @Override
@@ -176,7 +185,7 @@ public class TasksServiceImpl implements TasksService {
         try {
             return em.createQuery(cq).getSingleResult();
         } catch (NoResultException e) {
-            return null;
+            throw new NoResultException(String.format("Не существует рейтинга у задания с id:%s", id));
         }
     }
 
@@ -267,7 +276,7 @@ public class TasksServiceImpl implements TasksService {
         try {
             return em.createQuery(cq).getResultList();
         } catch (NoResultException e) {
-            return null;
+            throw new NoResultException("Задания отсутствуют");
         }
     }
 

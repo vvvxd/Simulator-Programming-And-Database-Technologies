@@ -1,16 +1,17 @@
 import * as UT from "./userTypes";
 import {usersAPI} from '../../api/api';
+import {loadInfo} from "../prifile/profileActions";
 
 export const fetchUsers = () => {
   return (dispatch) => {
     dispatch(userRequest());
-      usersAPI.fetchUsers()
-      .then((response) => {
-        dispatch(userSuccess(response.data));
-      })
-      .catch((error) => {
-        dispatch(userFailure(error.message));
-      });
+    usersAPI.fetchUsers()
+        .then((response) => {
+          dispatch(userSuccess(response.data));
+        })
+        .catch((error) => {
+          dispatch(userFailure(error.message));
+        });
   };
 };
 
@@ -25,7 +26,12 @@ export const registerUser = (userObject) => async (dispatch) => {
     return Promise.reject(error);
   }
 };
-
+export const updateProfile = (id, firstName, lastName, password) => (dispatch) => {
+  usersAPI.updateProfile(id, firstName, lastName, password).then(() => dispatch(loadInfo(id)))
+}
+export const updateUser = (id, email, password, firstName, lastName, userGroupId, role) => (dispatch) => {
+  usersAPI.updateUser(id, email, password, firstName, lastName, userGroupId, role).then(() => dispatch(loadInfo(id)))
+}
 const userRequest = () => {
   return {
     type: UT.USER_REQUEST,

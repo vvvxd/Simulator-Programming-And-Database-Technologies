@@ -1,11 +1,9 @@
 package com.example.simulatordatabasetechnologies.rest;
 
-import com.example.simulatordatabasetechnologies.dto.DeleteRequestDTO;
-import com.example.simulatordatabasetechnologies.dto.GroupDTO;
-import com.example.simulatordatabasetechnologies.dto.TasksDTO;
-import com.example.simulatordatabasetechnologies.dto.UserAddDTO;
+import com.example.simulatordatabasetechnologies.dto.*;
 import com.example.simulatordatabasetechnologies.service.UsersService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -84,6 +82,16 @@ public class UsersRestControllerV1 {
     public ResponseEntity<?> getUsers() {
         try {
             return new ResponseEntity<>(usersService.getUsers(), HttpStatus.OK);
+        } catch (RuntimeException e) {
+            log.debug(e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
+        }
+    }
+
+    @PostMapping("/update_profile")
+    public ResponseEntity<?> updateUser(@RequestBody ProfileDTO data) {
+        try {
+            return new ResponseEntity<>(usersService.profileUpdate(data), HttpStatus.OK);
         } catch (RuntimeException e) {
             log.debug(e.getMessage());
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);

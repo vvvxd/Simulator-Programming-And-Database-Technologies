@@ -19,7 +19,6 @@ import java.util.List;
 @RequestMapping("/api/v1/admin")
 @CrossOrigin(origins="http://localhost:3000")
 @Slf4j
-
 public class AdminRestControllerV1 {
     private final UsersService usersService;
     private final TasksService tasksService;
@@ -29,6 +28,7 @@ public class AdminRestControllerV1 {
         this.tasksService = tasksService;
     }
 
+    @PreAuthorize("hasAuthority('admin_panel')")
     @GetMapping("/groups")
     public ResponseEntity<?> getGroups() {
         try {
@@ -41,6 +41,7 @@ public class AdminRestControllerV1 {
         }
     }
 
+    @PreAuthorize("hasAuthority('admin_panel')")
     @GetMapping("/users")
     public ResponseEntity<?> getUsers() {
         try {
@@ -52,6 +53,7 @@ public class AdminRestControllerV1 {
         }
     }
 
+    @PreAuthorize("hasAuthority('admin_panel')")
     @GetMapping("/tasks")
     public ResponseEntity<?> getAllTasks() {
         try {
@@ -62,8 +64,9 @@ public class AdminRestControllerV1 {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
+    @PreAuthorize("hasAuthority('admin_panel')")
     @GetMapping("/groups/{id}")
-    public ResponseEntity<?> updateGroup(@PathVariable Long id) {
+    public ResponseEntity<?> getGroup(@PathVariable Long id) {
         try {
             return new ResponseEntity<>(usersService.getGroup(id), HttpStatus.OK);
         } catch (RuntimeException e) {
@@ -71,6 +74,7 @@ public class AdminRestControllerV1 {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
+    @PreAuthorize("hasAuthority('admin_panel')")
     @PostMapping("/groups")
     public ResponseEntity<?> addGroup(@RequestBody GroupDTO data) {
         try {
@@ -80,6 +84,7 @@ public class AdminRestControllerV1 {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
+    @PreAuthorize("hasAuthority('admin_panel')")
     @PutMapping("/groups/{id}")
     public ResponseEntity<?> updateGroup(@PathVariable Long id, @RequestBody GroupDTO data) {
         data.setId(id);
@@ -90,6 +95,7 @@ public class AdminRestControllerV1 {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
+    @PreAuthorize("hasAuthority('admin_panel')")
     @DeleteMapping("/groups/{id}")
     public ResponseEntity<?> deleteGroup(@PathVariable Long id) {
         try {
@@ -100,6 +106,7 @@ public class AdminRestControllerV1 {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
+    @PreAuthorize("hasAuthority('admin_panel')")
     @PostMapping("/tasks")
     public ResponseEntity<?> addTasks(@RequestBody TasksRequestDTO request) {
         try {
@@ -110,6 +117,7 @@ public class AdminRestControllerV1 {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
+    @PreAuthorize("hasAuthority('admin_panel')")
     @PutMapping("/tasks/{id}")
     public ResponseEntity<?> updateTasks(@PathVariable Long id, @RequestBody TasksRequestDTO data) {
         data.setId(id);
@@ -120,6 +128,7 @@ public class AdminRestControllerV1 {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
+    @PreAuthorize("hasAuthority('admin_panel')")
     @DeleteMapping("/tasks/{id}")
     public ResponseEntity<?> deleteTask(@PathVariable Long id) {
         try {
@@ -130,8 +139,9 @@ public class AdminRestControllerV1 {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
+    @PreAuthorize("hasAuthority('admin_panel')")
     @GetMapping("/tasks/{id}")
-    public ResponseEntity<?> updateTask(@PathVariable Long id) {
+    public ResponseEntity<?> getTask(@PathVariable Long id) {
         try {
             return new ResponseEntity<>(tasksService.getTaskInfo(id), HttpStatus.OK);
         } catch (RuntimeException e) {
@@ -139,6 +149,7 @@ public class AdminRestControllerV1 {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
+    @PreAuthorize("hasAuthority('admin_panel')")
     @PostMapping("/users")
     public ResponseEntity<?> addUser(@RequestBody UserAddDTO data) {
         try {
@@ -148,6 +159,7 @@ public class AdminRestControllerV1 {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
+    @PreAuthorize("hasAuthority('admin_panel')")
     @DeleteMapping("/users/{id}")
     public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         try {
@@ -158,8 +170,9 @@ public class AdminRestControllerV1 {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
+    @PreAuthorize("hasAuthority('admin_panel')")
     @GetMapping("/users/{id}")
-    public ResponseEntity<?> addUser(@PathVariable Long id) {
+    public ResponseEntity<?> getUser(@PathVariable Long id) {
         try {
             return new ResponseEntity<>(usersService.getUserInfo(id), HttpStatus.OK);
         } catch (RuntimeException e) {
@@ -167,6 +180,7 @@ public class AdminRestControllerV1 {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.FORBIDDEN);
         }
     }
+    @PreAuthorize("hasAuthority('admin_panel')")
     @PutMapping("/users/{id}")
     public ResponseEntity<?> updateUser(@PathVariable Long id, @RequestBody UserAddDTO data) {
         data.setId(id);

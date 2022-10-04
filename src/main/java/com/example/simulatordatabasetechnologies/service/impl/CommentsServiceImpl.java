@@ -2,6 +2,7 @@ package com.example.simulatordatabasetechnologies.service.impl;
 
 import com.example.simulatordatabasetechnologies.dto.CommentsDTO;
 import com.example.simulatordatabasetechnologies.dto.CommentsRequestDTO;
+import com.example.simulatordatabasetechnologies.exception.NotFoundException;
 import com.example.simulatordatabasetechnologies.model.CommentsEntity;
 import com.example.simulatordatabasetechnologies.model.CommentsEntity_;
 import com.example.simulatordatabasetechnologies.model.UserEntity;
@@ -51,11 +52,11 @@ public class CommentsServiceImpl implements CommentsService {
         );
 
         cq.where(cb.equal(root.get(CommentsEntity_.tasksId), id));
-
         try {
             return em.createQuery(cq).getResultList();
-        } catch (NoResultException e) {
-            return null;
+        }
+        catch (NoResultException e){
+            throw new NoResultException(String.format("Не существует коментариев по заданию id:%s", id));
         }
     }
 
@@ -64,7 +65,7 @@ public class CommentsServiceImpl implements CommentsService {
     public void addComment(CommentsRequestDTO data) {
         UserEntity userEntity = securityService.getCurrentUser();
         if (userEntity == null)
-            throw new RuntimeException("Пользователь не найден");
+            throw new NotFoundException("Пользователь не найден");
         CommentsEntity entity = new CommentsEntity();
         entity.setTasksId(data.getTasksId());
         entity.setUsersId(userEntity.getId());

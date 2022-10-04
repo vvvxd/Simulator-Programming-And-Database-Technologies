@@ -30,4 +30,6 @@ public interface UsersService {
 
     void deleteUser(Long id);
     GroupDTO getGroup(Long id);
+
+    ProfileDTO profileUpdate(ProfileDTO data);
 }

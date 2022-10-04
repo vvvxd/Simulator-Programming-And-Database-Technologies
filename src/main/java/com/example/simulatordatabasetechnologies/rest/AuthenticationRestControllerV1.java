@@ -58,10 +58,9 @@ public class AuthenticationRestControllerV1 {
     @PostMapping(value = "/register", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> register(@RequestBody RegisterRequestDTO request) {
         try {
-            Boolean present =  userRepository.findByEmail(request.getEmail()).isPresent();
-            if (present.equals(true))
+            boolean present =  userRepository.findByEmail(request.getEmail()).isPresent();
+            if (present)
                 throw  new RuntimeException("With this email, the user already exists");
-
             UserEntity user = new UserEntity();
             user.setFirstName(request.getFirstName());
             user.setLastName(request.getLastName());

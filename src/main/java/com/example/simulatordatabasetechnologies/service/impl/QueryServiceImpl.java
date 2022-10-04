@@ -2,10 +2,12 @@ package com.example.simulatordatabasetechnologies.service.impl;
 
 import com.example.simulatordatabasetechnologies.dto.QueryRequestDTO;
 import com.example.simulatordatabasetechnologies.dto.TasksDTO;
+import com.example.simulatordatabasetechnologies.exception.NotFoundException;
 import com.example.simulatordatabasetechnologies.model.*;
 import com.example.simulatordatabasetechnologies.security.SecurityService;
 import com.example.simulatordatabasetechnologies.service.QueryService;
 import com.example.simulatordatabasetechnologies.service.TasksService;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -47,11 +49,11 @@ public class QueryServiceImpl implements QueryService {
     public Map<String, Object> checkSelect(QueryRequestDTO requestDTO) {
         TasksEntity task = em.find(TasksEntity.class, requestDTO.getTaskId());
         if (task == null)
-            throw new RuntimeException("Задание не найдено.");
+            throw new NotFoundException(String.format("Задание с id:%S не найдено.", requestDTO.getTaskId()));
 
         UserEntity userEntity = securityService.getCurrentUser();
         if (userEntity == null)
-            throw new RuntimeException("Пользователь не найден");
+            throw new NotFoundException("Пользователь не найден");
 
         Boolean decision = true;
         String error = "";
@@ -106,8 +108,8 @@ public class QueryServiceImpl implements QueryService {
         }
 
         Map<String, Object> result = new HashMap<>();
-        result.put("decision",decision);
-        result.put("error",error);
+        result.put("decision", decision);
+        result.put("error", error);
 
         return result;
     }
@@ -116,7 +118,6 @@ public class QueryServiceImpl implements QueryService {
     @Transactional
     public BigDecimal getSQLCostVal(String sql) {
         String uuid = UUID.randomUUID().toString().substring(0, 18);
-
         jdbcTemplate.update("EXPLAIN PLAN set STATEMENT_ID = '" + uuid + "' FOR " + sql);
 
         List<Map<String, Object>> cost = jdbcTemplate.queryForList("select DISTINCT p.io_cost cost from plan_table p" +
