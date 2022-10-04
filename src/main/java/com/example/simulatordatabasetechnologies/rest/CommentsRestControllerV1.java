@@ -22,7 +22,7 @@ public class CommentsRestControllerV1 {
 
     @GetMapping("/get_comments/{id}")
     @PreAuthorize("hasAuthority('study')")
-    public ResponseEntity<?> getCommentsByTaskId(@PathVariable long id) {
+    public ResponseEntity<?> getCommentsByTaskId(@PathVariable Long id) {
         try {
             return new ResponseEntity<>(commentsService.getCommentsByTaskId(id), HttpStatus.OK);
         } catch (RuntimeException e) {

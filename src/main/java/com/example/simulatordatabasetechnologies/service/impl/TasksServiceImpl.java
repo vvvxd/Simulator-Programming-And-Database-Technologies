@@ -4,6 +4,7 @@ import com.example.simulatordatabasetechnologies.dto.*;
 import com.example.simulatordatabasetechnologies.exception.NotFoundException;
 import com.example.simulatordatabasetechnologies.model.*;
 import com.example.simulatordatabasetechnologies.repository.TasksRepository;
+import com.example.simulatordatabasetechnologies.repository.TasksUsersRepository;
 import com.example.simulatordatabasetechnologies.security.SecurityService;
 import com.example.simulatordatabasetechnologies.service.TasksService;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,14 @@ public class TasksServiceImpl implements TasksService {
 
     private final SecurityService securityService;
 
-    public TasksServiceImpl(SecurityService securityService) {
+    private final TasksRepository tasksRepository;
+
+    private final TasksUsersRepository tasksUsersRepository;
+
+    public TasksServiceImpl(SecurityService securityService, TasksRepository tasksRepository, TasksUsersRepository tasksUsersRepository) {
         this.securityService = securityService;
+        this.tasksRepository = tasksRepository;
+        this.tasksUsersRepository = tasksUsersRepository;
     }
 
     @Override
@@ -155,7 +162,7 @@ public class TasksServiceImpl implements TasksService {
     }
 
     @Override
-    public TaskStatsDTO getTaskStats(long id) {
+    public TaskStatsDTO getTaskStats(Long id) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<TaskStatsDTO> cq = cb.createQuery(TaskStatsDTO.class);
         Root<TasksEntity> root = cq.from(TasksEntity.class);
@@ -278,6 +285,17 @@ public class TasksServiceImpl implements TasksService {
         } catch (NoResultException e) {
             throw new NoResultException("Задания отсутствуют");
         }
+    }
+
+    @Override
+    public void saveNewTaskByUser(Long userId) {
+        List<Long> listTasksId =  tasksRepository.findAll().stream().map(TasksEntity::getId).toList();
+        listTasksId.forEach(v->{
+            TasksUsersEntity entity = new TasksUsersEntity();
+            entity.setTasksId(v);
+            entity.setUsersId(userId);
+            tasksUsersRepository.saveAndFlush(entity);
+        });
     }
 
 }

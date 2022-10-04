@@ -1,7 +1,7 @@
 export const authProvider = {
     login: ({ username, password }) =>  {
         const email = username
-        const request = new Request('http://localhost:8080/api/v1/auth/login', {
+        const request = new Request('http://localhost:8080/api/v1/auth/login/admin', {
             method: 'POST',
             body: JSON.stringify({ email, password }),
             headers: new Headers({ 'Content-Type': 'application/json' }),

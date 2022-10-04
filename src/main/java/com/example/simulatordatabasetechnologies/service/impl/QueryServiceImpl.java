@@ -7,7 +7,6 @@ import com.example.simulatordatabasetechnologies.model.*;
 import com.example.simulatordatabasetechnologies.security.SecurityService;
 import com.example.simulatordatabasetechnologies.service.QueryService;
 import com.example.simulatordatabasetechnologies.service.TasksService;
-import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -55,7 +54,7 @@ public class QueryServiceImpl implements QueryService {
         if (userEntity == null)
             throw new NotFoundException("Пользователь не найден");
 
-        Boolean decision = true;
+        boolean decision = true;
         String error = "";
 
         List<Map<String, Object>> userQueryResult = jdbcTemplate.queryForList(requestDTO.getSql());

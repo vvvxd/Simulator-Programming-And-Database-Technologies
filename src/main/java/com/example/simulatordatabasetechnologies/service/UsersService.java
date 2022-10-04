@@ -1,6 +1,7 @@
 package com.example.simulatordatabasetechnologies.service;
 
 import com.example.simulatordatabasetechnologies.dto.*;
+import com.example.simulatordatabasetechnologies.model.UserEntity;
 
 import java.util.List;
 
@@ -32,4 +33,8 @@ public interface UsersService {
     GroupDTO getGroup(Long id);
 
     ProfileDTO profileUpdate(ProfileDTO data);
+
+    UserEntity getUserByEmail(String email);
+
+    UserEntity saveAndCheckUser(RegisterRequestDTO registerRequestDTO);
 }

@@ -15,11 +15,13 @@ public interface TasksService {
 
     TasksRequestDTO addTask(TasksRequestDTO task);
 
-    TaskStatsDTO getTaskStats(long id);
+    TaskStatsDTO getTaskStats(Long id);
 
     TasksRequestDTO updateTask(TasksRequestDTO data);
 
     void deleteTask(Long id);
 
     List<TasksAdminDTO> getAllTasks();
+
+    void saveNewTaskByUser(Long userId);
 }

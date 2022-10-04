@@ -6,6 +6,7 @@ import com.example.simulatordatabasetechnologies.repository.TasksRepository;
 import com.example.simulatordatabasetechnologies.repository.UserRepository;
 import com.example.simulatordatabasetechnologies.security.SecurityService;
 import com.example.simulatordatabasetechnologies.service.UsersService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -355,6 +356,32 @@ public class UsersServiceImpl implements UsersService {
         em.createQuery(cu).executeUpdate();
 
         return data;
+    }
+
+    @Override
+    public UserEntity getUserByEmail(String email) {
+        UserEntity user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("User doesn't exists"));
+        user.setLastEntry(LocalDateTime.now());
+        em.merge(user);
+        em.flush();
+        return user;
+    }
+
+    @Override
+    public UserEntity saveAndCheckUser(RegisterRequestDTO registerRequestDTO) {
+        if (userRepository.findByEmail(registerRequestDTO.getEmail()).isPresent())
+            throw  new RuntimeException("With this email, the user already exists");
+        UserEntity user = new UserEntity();
+        user.setFirstName(registerRequestDTO.getFirstName());
+        user.setLastName(registerRequestDTO.getLastName());
+        user.setUserGroupId(registerRequestDTO.getUserGroupId());
+        user.setEmail(registerRequestDTO.getEmail());
+        user.setPassword(passwordEncoder.encode(registerRequestDTO.getPassword()));
+        user.setRole(Role.USER);
+        user.setStatus(Status.ACTIVE);
+        user.setFirstEntry(LocalDateTime.now());
+        userRepository.saveAndFlush(user);
+        return user;
     }
 
     @Override
