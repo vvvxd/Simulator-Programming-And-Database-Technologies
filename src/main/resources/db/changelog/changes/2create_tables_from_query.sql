@@ -1,13 +1,13 @@
 create table points(
   cod_point integer not null,
-  name_point varchar2(20) not null,
+  name_point varchar2(50) not null,
   distance integer not null,
 constraint point_pk primary key (cod_point)
 );
 
 create table routes (
   cod_route integer not null,
-  name_route varchar2(20) not null,
+  name_route varchar2(50) not null,
 constraint route_pk primary key (Cod_Route)
 );
 
@@ -29,7 +29,7 @@ constraint km_prices_pk primary key (class)
 
 create table models (
   cod_model integer not null,
-  name_model varchar2(20) not null,
+  name_model varchar2(50) not null,
   places integer not null,
   class integer not null,
 constraint model_pk primary key (cod_model),
@@ -39,7 +39,7 @@ constraint km_prices_fk_class  foreign key (class)
 
 create table buses (
   cod_bus integer not null,
-  bus_number varchar2(20) not null,
+  bus_number varchar2(50) not null,
   cod_model integer not null,
 constraint bus_pk primary key (cod_bus),
 constraint bus_model_fk foreign key (cod_model)

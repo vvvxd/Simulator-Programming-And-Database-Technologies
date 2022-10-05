@@ -1,3 +1,13 @@
+Insert into KM_PRICES (CLASS,PRICE) values ('1','1,1');
+Insert into KM_PRICES (CLASS,PRICE) values ('2','0,9');
+
+Insert into MODELS (COD_MODEL,NAME_MODEL,PLACES,CLASS) values ('1','Газель','20','1');
+Insert into MODELS (COD_MODEL,NAME_MODEL,PLACES,CLASS) values ('2','ПАЗ','24','1');
+Insert into MODELS (COD_MODEL,NAME_MODEL,PLACES,CLASS) values ('3','ЛАЗ','40','2');
+Insert into MODELS (COD_MODEL,NAME_MODEL,PLACES,CLASS) values ('4','Икарус','42','2');
+Insert into MODELS (COD_MODEL,NAME_MODEL,PLACES,CLASS) values ('5','Мерседес','44','2');
+Insert into MODELS (COD_MODEL,NAME_MODEL,PLACES,CLASS) values ('6','ЛиАЗ','35','1');
+
 Insert into BUSES (COD_BUS,BUS_NUMBER,COD_MODEL) values ('1','АА 510 35','2');
 Insert into BUSES (COD_BUS,BUS_NUMBER,COD_MODEL) values ('2','АА 452 35','2');
 Insert into BUSES (COD_BUS,BUS_NUMBER,COD_MODEL) values ('3','ВВ 927 35','2');
@@ -11,16 +21,6 @@ Insert into BUSES (COD_BUS,BUS_NUMBER,COD_MODEL) values ('10','АР 813 35','4')
 Insert into BUSES (COD_BUS,BUS_NUMBER,COD_MODEL) values ('11','ЙМ 833 35','4');
 Insert into BUSES (COD_BUS,BUS_NUMBER,COD_MODEL) values ('12','НЧ 776 35','6');
 Insert into BUSES (COD_BUS,BUS_NUMBER,COD_MODEL) values ('13','ЙО 555 35','5');
-
-Insert into KM_PRICES (CLASS,PRICE) values ('1','1,1');
-Insert into KM_PRICES (CLASS,PRICE) values ('2','0,9');
-
-Insert into MODELS (COD_MODEL,NAME_MODEL,PLACES,CLASS) values ('1','Газель','20','1');
-Insert into MODELS (COD_MODEL,NAME_MODEL,PLACES,CLASS) values ('2','ПАЗ','24','1');
-Insert into MODELS (COD_MODEL,NAME_MODEL,PLACES,CLASS) values ('3','ЛАЗ','40','2');
-Insert into MODELS (COD_MODEL,NAME_MODEL,PLACES,CLASS) values ('4','Икарус','42','2');
-Insert into MODELS (COD_MODEL,NAME_MODEL,PLACES,CLASS) values ('5','Мерседес','44','2');
-Insert into MODELS (COD_MODEL,NAME_MODEL,PLACES,CLASS) values ('6','ЛиАЗ','35','1');
 
 Insert into POINTS (COD_POINT,NAME_POINT,DISTANCE) values ('1','Сосновка','20');
 Insert into POINTS (COD_POINT,NAME_POINT,DISTANCE) values ('2','Нестерово','51');
@@ -57,6 +57,18 @@ Insert into POINTS (COD_POINT,NAME_POINT,DISTANCE) values ('32','Нюксени�
 Insert into POINTS (COD_POINT,NAME_POINT,DISTANCE) values ('33','Великий Устюг','426');
 Insert into POINTS (COD_POINT,NAME_POINT,DISTANCE) values ('34','Великий Устюг-20','426');
 Insert into POINTS (COD_POINT,NAME_POINT,DISTANCE) values ('35','Лоста','5');
+
+Insert into ROUTES (COD_ROUTE,NAME_ROUTE) values ('1','Вологда-Шексна');
+Insert into ROUTES (COD_ROUTE,NAME_ROUTE) values ('2','Вологда-Череповец');
+Insert into ROUTES (COD_ROUTE,NAME_ROUTE) values ('3','Вологда-Устюжна');
+Insert into ROUTES (COD_ROUTE,NAME_ROUTE) values ('4','Вологда-Чагода');
+Insert into ROUTES (COD_ROUTE,NAME_ROUTE) values ('5','Вологда-Кириллов');
+Insert into ROUTES (COD_ROUTE,NAME_ROUTE) values ('6','Вологда-Сокол');
+Insert into ROUTES (COD_ROUTE,NAME_ROUTE) values ('7','Вологда-Тотьма');
+Insert into ROUTES (COD_ROUTE,NAME_ROUTE) values ('8','Вологда-Верховажье');
+Insert into ROUTES (COD_ROUTE,NAME_ROUTE) values ('9','Вологда-Грязовец');
+Insert into ROUTES (COD_ROUTE,NAME_ROUTE) values ('10','Вологда-Белозерск');
+Insert into ROUTES (COD_ROUTE,NAME_ROUTE) values ('11','Вологда-Великий Устюг');
 
 Insert into POINTS_ROUTES (COD_POINT,COD_ROUTE) values ('1','1');
 Insert into POINTS_ROUTES (COD_POINT,COD_ROUTE) values ('1','2');
@@ -124,18 +136,6 @@ Insert into POINTS_ROUTES (COD_POINT,COD_ROUTE) values ('31','9');
 Insert into POINTS_ROUTES (COD_POINT,COD_ROUTE) values ('32','11');
 Insert into POINTS_ROUTES (COD_POINT,COD_ROUTE) values ('33','11');
 Insert into POINTS_ROUTES (COD_POINT,COD_ROUTE) values ('34','11');
-
-Insert into ROUTES (COD_ROUTE,NAME_ROUTE) values ('1','Вологда-Шексна');
-Insert into ROUTES (COD_ROUTE,NAME_ROUTE) values ('2','Вологда-Череповец');
-Insert into ROUTES (COD_ROUTE,NAME_ROUTE) values ('3','Вологда-Устюжна');
-Insert into ROUTES (COD_ROUTE,NAME_ROUTE) values ('4','Вологда-Чагода');
-Insert into ROUTES (COD_ROUTE,NAME_ROUTE) values ('5','Вологда-Кириллов');
-Insert into ROUTES (COD_ROUTE,NAME_ROUTE) values ('6','Вологда-Сокол');
-Insert into ROUTES (COD_ROUTE,NAME_ROUTE) values ('7','Вологда-Тотьма');
-Insert into ROUTES (COD_ROUTE,NAME_ROUTE) values ('8','Вологда-Верховажье');
-Insert into ROUTES (COD_ROUTE,NAME_ROUTE) values ('9','Вологда-Грязовец');
-Insert into ROUTES (COD_ROUTE,NAME_ROUTE) values ('10','Вологда-Белозерск');
-Insert into ROUTES (COD_ROUTE,NAME_ROUTE) values ('11','Вологда-Великий Устюг');
 
 Insert into TRIPS (COD_TRIP,WEEK_DAY,HOUR,MINUTE,TICKETS,COD_ROUTE,COD_BUS) values ('1','6','8','20','18','4','1');
 Insert into TRIPS (COD_TRIP,WEEK_DAY,HOUR,MINUTE,TICKETS,COD_ROUTE,COD_BUS) values ('2','3','11','51','33','2','11');
