@@ -1,10 +1,7 @@
 package com.example.simulatordatabasetechnologies.service.impl;
 
 import com.example.simulatordatabasetechnologies.dto.*;
-import com.example.simulatordatabasetechnologies.exception.NotFoundException;
 import com.example.simulatordatabasetechnologies.model.*;
-import com.example.simulatordatabasetechnologies.repository.TasksRepository;
-import com.example.simulatordatabasetechnologies.repository.TasksUsersRepository;
 import com.example.simulatordatabasetechnologies.security.SecurityService;
 import com.example.simulatordatabasetechnologies.service.TasksService;
 import org.springframework.stereotype.Service;
@@ -37,7 +34,7 @@ public class TasksServiceImpl implements TasksService {
     public List<TasksDTO> getUserTasks() {
         UserEntity userEntity = securityService.getCurrentUser();
         if (userEntity == null)
-            throw new NotFoundException("Пользователь не найден");
+            throw new RuntimeException("Пользователь не найден");
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<TasksDTO> cq = cb.createQuery(TasksDTO.class);
